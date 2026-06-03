@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/*
+ * Global styles
+
+ * Centralized place for application-wide styles and customizations
+ * that complement Tailwind's utility classes.
+ */
+@theme {
+  --color-brand-blue: #2c94de;
+  --color-brand-blue-hover: #1a78bc;
+  --color-brand-dark: #1e293b;
+  /* --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono); */
+}
+
+@layer base {
+  body {
+    /* Explicitly tell the body to use the theme's sans font */
+    /* font-family: var(--font-sans); */
+  }
+
+  * {
+    scrollbar-width: thin;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px; /* Vertical scrollbar width */
+    height: 6px; /* Horizontal scrollbar height */
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent; /* Makes the track invisible */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 20px; /* Fully rounded handle */
+  }
+}

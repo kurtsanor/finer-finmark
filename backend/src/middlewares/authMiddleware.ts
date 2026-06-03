@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 declare global {
@@ -29,7 +29,10 @@ export const authenticate = (
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || ("your_jwt_secret_key" as string),
+    ) as {
       userId: string;
       email: string;
       role: string;

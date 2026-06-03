@@ -4,8 +4,9 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import authRoutes from "./features/auth/auth.routes";
-import connectToDatabase from "./config/db";
+import authRoutes from "./features/auth/auth.routes.js";
+import connectToDatabase from "./config/db.js";
+import { authenticate } from "./middlewares/authMiddleware.js";
 
 // Initialize environment variables
 dotenv.config();
@@ -47,7 +48,7 @@ app.use(
 );
 
 // Routes
-app.get("/api/health", (req, res) => {
+app.get("/api/health", authenticate, (req, res) => {
   res.json({ status: "ok" });
 });
 

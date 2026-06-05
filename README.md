@@ -43,7 +43,7 @@ npm run dev
 
 Accessing the frontend
 
-- Open your browser at `http://localhost:5173`.
+- Open your browser at `http://localhost:5173/sign-in`.
 
 Notes
 

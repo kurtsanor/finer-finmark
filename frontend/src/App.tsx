@@ -5,6 +5,7 @@ import SignUpPage from "./pages/SignUpPage";
 import MainLayout from "./layouts/MainLayout";
 import OverviewPage from "./pages/OverviewPage";
 import ShopPage from "./pages/ShopPage";
+import CartPage from "./pages/CartPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<OverviewPage />} />
           <Route path="/shop" element={<ShopPage />} />
+          <Route path="/cart" element={<CartPage />} />
           {/* Add main application routes here */}
         </Route>
       </Routes>

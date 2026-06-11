@@ -9,3 +9,10 @@ export type SignInRequest = {
   email: string;
   password: string;
 };
+
+export type JwtClaims = {
+  userId: string;
+  role: string;
+  iat: number;
+  exp: number;
+};

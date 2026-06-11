@@ -13,3 +13,12 @@ export const updateRole = async (userId: string, role: string) => {
     throw error;
   }
 };
+
+export const getUserById = async (userId: string) => {
+  try {
+    const user = await User.findById(userId).select("-password").lean();
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};

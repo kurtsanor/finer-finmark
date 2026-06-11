@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { customerNavigations } from "../constants/sidebarButtons";
+import { Fragment } from "react/jsx-runtime";
 
 const Sidebar = () => {
   const navigations = customerNavigations.map((nav) => (
-    <>
+    <Fragment key={nav.category}>
       <p className="ml-5 mb-1 mt-2 font-semibold">{nav.category}</p>
       {nav.items.map((item) => (
         <Link
@@ -14,7 +15,7 @@ const Sidebar = () => {
           {item.icon({ className: "w-5 h-5" })} {item.name}
         </Link>
       ))}
-    </>
+    </Fragment>
   ));
 
   return (

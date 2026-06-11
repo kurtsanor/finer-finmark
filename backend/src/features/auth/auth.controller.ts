@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import * as authService from "./auth.service.js";
+import * as userService from "../users/user.service.js";
 
 /**
  * Handles user sign-up requests
@@ -37,6 +38,25 @@ export const signIn = async (
     });
 
     res.status(200).json({ message: "Sign in successful" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Handles requests to retrieve the authenticated user's information. Requires a valid JWT in the request cookies.
+ * @returns The authenticated user's information, or an error if the user is not authenticated
+ */
+export const getMe = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = await userService.getUserById(req.user!.userId);
+    res
+      .status(200)
+      .json({ message: "User retrieved successfully", data: user });
   } catch (error) {
     next(error);
   }

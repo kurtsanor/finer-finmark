@@ -4,10 +4,15 @@ import "./index.css";
 import App from "./App.tsx";
 import { Toaster } from "react-hot-toast";
 import { TOASTER_DEFAULT_OPTIONS } from "./constants/Toaster.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Toaster position="bottom-right" toastOptions={TOASTER_DEFAULT_OPTIONS} />
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <Toaster position="bottom-right" toastOptions={TOASTER_DEFAULT_OPTIONS} />
+      <App />
+    </QueryClientProvider>
   </StrictMode>,
 );

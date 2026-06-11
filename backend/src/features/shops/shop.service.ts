@@ -8,8 +8,6 @@ export const create = async (data: CreateShopDto): Promise<ShopDocument> => {
     // Find the user by ID
     const user = await User.findById(data.userId).lean();
 
-    // Check if the user exists and is a merchant
-
     // Find if the user already has a shop
     const shop = await Shop.findOne({ userId: data.userId }).lean();
 

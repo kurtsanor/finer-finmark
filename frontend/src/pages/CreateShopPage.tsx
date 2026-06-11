@@ -1,17 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../components/Button";
 import { useForm } from "react-hook-form";
-import axiosInstance from "../utils/axiosInstance";
 import toast from "react-hot-toast";
 
 import { z } from "zod";
+import { useCreateShop } from "../hooks/useCreateShop";
 
 export const createShopSchema = z.object({
   name: z
     .string()
     .min(3, "Shop name must be at least 3 characters")
     .max(100, "Shop name cannot exceed 100 characters"),
-  shopDescription: z
+  description: z
     .string()
     .min(10, "Please provide a more detailed shop description"),
 });
@@ -33,9 +33,11 @@ const CreateShopPage = () => {
     mode: "onSubmit",
     defaultValues: {
       name: "",
-      shopDescription: "",
+      description: "",
     },
   });
+
+  const createShopMutation = useCreateShop();
 
   /**
    * Form submission handler for creating a shop storefront.
@@ -43,14 +45,13 @@ const CreateShopPage = () => {
    */
   const onSubmit = async (data: CreateShopFormValues) => {
     try {
-      const response = await axiosInstance.post("/api/shops", data);
+      const response = await createShopMutation.mutateAsync(data);
       toast("Shop created successfully!");
-      console.log(response.status);
       console.log(response.data);
 
       // Redirect to seller center layout because backend asynchronously shifts role to merchant
       setTimeout(() => {
-        window.location.href = "/seller-center";
+        window.location.href = "/seller-centre/products";
       }, 1500);
     } catch (error: any) {
       toast(
@@ -102,16 +103,16 @@ const CreateShopPage = () => {
             Shop Description
           </label>
           <textarea
-            {...register("shopDescription")}
-            id="shopDescription"
+            {...register("description")}
+            id="description"
             disabled={isSubmitting}
             placeholder="Describe your shop and the products you offer..."
             rows={3}
             className="border border-neutral-200 px-3 py-1.5 tracking-tight bg-neutral-50 rounded-lg outline-none transition-all placeholder:text-slate-400 focus:border-black focus:ring-1 focus:ring-black resize-none disabled:opacity-50"
           />
-          {errors.shopDescription && (
+          {errors.description && (
             <span className="text-xs text-red-500 mt-1">
-              {errors.shopDescription.message}
+              {errors.description.message}
             </span>
           )}
         </div>

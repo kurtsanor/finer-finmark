@@ -112,3 +112,79 @@ export const customerNavigations = [
     ],
   },
 ];
+
+export const sellerNavigations = [
+  {
+    category: "Product",
+    items: [
+      {
+        name: "My Products",
+        path: "/seller-centre/products",
+        icon: (props: React.SVGProps<SVGSVGElement>) => (
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.3333 28V6.66667C21.3333 5.95942 21.0524 5.28115 20.5523 4.78105C20.0522 4.28095 19.3739 4 18.6667 4H13.3333C12.6261 4 11.9478 4.28095 11.4477 4.78105C10.9476 5.28115 10.6667 5.95942 10.6667 6.66667V28M5.33332 9.33333H26.6667C28.1394 9.33333 29.3333 10.5272 29.3333 12V25.3333C29.3333 26.8061 28.1394 28 26.6667 28H5.33332C3.86056 28 2.66666 26.8061 2.66666 25.3333V12C2.66666 10.5272 3.86056 9.33333 5.33332 9.33333Z"
+              stroke="black"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        ),
+      },
+      {
+        name: "Add New Product",
+        path: "/seller-centre/products/new",
+        icon: (props: React.SVGProps<SVGSVGElement>) => (
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.3333 28V6.66667C21.3333 5.95942 21.0524 5.28115 20.5523 4.78105C20.0522 4.28095 19.3739 4 18.6667 4H13.3333C12.6261 4 11.9478 4.28095 11.4477 4.78105C10.9476 5.28115 10.6667 5.95942 10.6667 6.66667V28M5.33332 9.33333H26.6667C28.1394 9.33333 29.3333 10.5272 29.3333 12V25.3333C29.3333 26.8061 28.1394 28 26.6667 28H5.33332C3.86056 28 2.66666 26.8061 2.66666 25.3333V12C2.66666 10.5272 3.86056 9.33333 5.33332 9.33333Z"
+              stroke="black"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        ),
+      },
+    ],
+  },
+  {
+    category: "Order",
+    items: [
+      {
+        name: "Orders",
+        path: "/seller-centre/orders",
+        icon: (props: React.SVGProps<SVGSVGElement>) => (
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 40 34"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M26.6667 23.4167V1.75H1.66666V23.4167H26.6667ZM26.6667 23.4167H38.3333V15.0833L33.3333 10.0833H26.6667L26.6667 23.4167ZM13.3333 27.5833C13.3333 29.8845 11.4678 31.75 9.16666 31.75C6.86547 31.75 4.99999 29.8845 4.99999 27.5833C4.99999 25.2821 6.86547 23.4167 9.16666 23.4167C11.4678 23.4167 13.3333 25.2821 13.3333 27.5833ZM35 27.5833C35 29.8845 33.1345 31.75 30.8333 31.75C28.5321 31.75 26.6667 29.8845 26.6667 27.5833C26.6667 25.2821 28.5321 23.4167 30.8333 23.4167C33.1345 23.4167 35 25.2821 35 27.5833Z"
+              stroke="black"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        ),
+      },
+    ],
+  },
+];

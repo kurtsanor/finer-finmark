@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { customerNavigations } from "../constants/sidebarButtons";
+import { sellerNavigations } from "../constants/sidebarButtons";
 
-const Sidebar = () => {
-  const navigations = customerNavigations.map((nav) => (
+const SellerSidebar = () => {
+  const navigations = sellerNavigations.map((nav) => (
     <>
       <p className="ml-5 mb-1 mt-2 font-semibold">{nav.category}</p>
       {nav.items.map((item) => (
@@ -24,4 +24,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default SellerSidebar;

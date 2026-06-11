@@ -3,9 +3,9 @@ const ShopPage = () => {
     <div key={i} className="flex flex-col h-full justify-between">
       <div>
         {/* put a background color on the wrapper container */}
-        <div className="bg-slate-100 h-48 w-full flex items-center justify-center p-4 rounded">
+        <div className="bg-slate-100 h-48 w-full flex items-center justify-center p-1 rounded">
           <img
-            className="h-full object-contain mix-blend-multiply"
+            className="h-full object-contain mix-blend-multiply rounded"
             src="/ball.png" // Even if this has a solid white BG, it will blend away
             alt={`Product ${i + 1}`}
           />

@@ -5,5 +5,5 @@ export type UserType = Document & {
   lastName: string;
   email: string;
   password: string;
-  role: "user" | "admin";
+  role: "customer" | "merchant";
 };

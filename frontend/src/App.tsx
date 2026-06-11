@@ -6,6 +6,10 @@ import MainLayout from "./layouts/MainLayout";
 import OverviewPage from "./pages/OverviewPage";
 import ShopPage from "./pages/ShopPage";
 import CartPage from "./pages/CartPage";
+import CreateShopPage from "./pages/CreateShopPage";
+import SellerLayout from "./layouts/SellerLayout";
+import SellerProductsPage from "./pages/SellerProductsPage";
+import CreateProductPage from "./pages/CreateProductPage";
 
 function App() {
   return (
@@ -15,11 +19,17 @@ function App() {
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
         </Route>
+        {/* Buyer layout and routes */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<OverviewPage />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/cart" element={<CartPage />} />
-          {/* Add main application routes here */}
+          <Route path="/create-shop" element={<CreateShopPage />} />
+        </Route>
+        {/* Seller centre layout and routes */}
+        <Route path="/seller-centre" element={<SellerLayout />}>
+          <Route path="products" element={<SellerProductsPage />} />
+          <Route path="products/new" element={<CreateProductPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

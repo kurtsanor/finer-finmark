@@ -35,6 +35,7 @@ export const signIn = async (
       secure: process.env.NODE_ENV === "production",
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     });
+
     res.status(200).json({ message: "Sign in successful" });
   } catch (error) {
     next(error);

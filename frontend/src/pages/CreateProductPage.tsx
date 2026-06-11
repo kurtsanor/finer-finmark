@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Button } from "../components/Button";
+import { useCreateProduct } from "../hooks/useCreateProduct";
 
 /*
  * CreateProductPage
@@ -47,15 +48,17 @@ const CreateProductPage = () => {
     },
   });
 
+  const useCreateProductMutation = useCreateProduct();
+
   /**
    * Dispatches the validated product creation payload to the product-service microservice.
    * @param data - Form validated properties via Zod.
    */
   const onSubmit = async (data: CreateProductFormValues) => {
     try {
-      //   await axiosInstance.post("/api/products", data);
-
-      toast.success("Product listed successfully!");
+      const response = await useCreateProductMutation.mutateAsync(data);
+      console.log("Product creation response: ", response.data);
+      toast.success("Product has been added!");
 
       // Navigate cleanly back inventory grid page
       navigate("/seller-centre/products");

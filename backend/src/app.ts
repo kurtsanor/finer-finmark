@@ -8,6 +8,7 @@ import authRoutes from "./features/auth/auth.routes.js";
 import connectToDatabase from "./config/db.js";
 import { authenticate } from "./middlewares/authMiddleware.js";
 import shopRoutes from "./features/shops/shop.routes.js";
+import productRoutes from "./features/products/product.routes.js";
 
 // Initialize environment variables
 dotenv.config();
@@ -30,6 +31,7 @@ app.use(cookieParser());
 // Define API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/shops", shopRoutes);
+app.use("/api/products", productRoutes);
 
 /*
  * Centralized error handler keeps API responses consistent.

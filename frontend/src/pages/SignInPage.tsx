@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { signInSchema, type SignInFormValues } from "../schemas/auth";
 import axiosInstance from "../utils/axiosInstance";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 /*
  * SignInPage
@@ -24,6 +25,8 @@ const SignInPage = () => {
     },
   });
 
+  const navigate = useNavigate();
+
   /**
    * Form submission handler for signing in users.
    * @param data - Validated form values from `react-hook-form`.
@@ -32,6 +35,7 @@ const SignInPage = () => {
     try {
       const response = await axiosInstance.post("/api/auth/sign-in", data);
       toast("Logged in successfully!");
+      navigate("/shop");
       console.log(response.status);
       console.log(response.data);
     } catch (error: any) {

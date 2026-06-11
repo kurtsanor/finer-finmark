@@ -12,6 +12,6 @@ export type CreateProductDto = {
   name: string;
   description: string;
   price: number;
-  shopId: Types.ObjectId;
+  userId: Types.ObjectId;
   imageUrl?: string | null;
 };

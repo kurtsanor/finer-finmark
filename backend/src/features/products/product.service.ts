@@ -13,7 +13,7 @@ export const create = async (
   const existingShop = await Shop.findOne({ userId: data.userId });
   if (!existingShop) {
     const error = new Error("User does not have a shop") as any;
-    error.status = 404;
+    error.status = 403;
     throw error;
   }
 

@@ -13,3 +13,17 @@ export const getMe = async () => {
     throw error;
   }
 };
+
+/**
+ * Signs the current user out of the application.
+ * @returns A success message if the user is signed out successfully, or an error if the request fails
+ * @throws An error if the request fails
+ */
+export const signOut = async () => {
+  try {
+    const response = await axiosInstance.post("/api/auth/logout");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

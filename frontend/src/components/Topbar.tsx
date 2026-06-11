@@ -1,27 +1,49 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { useLogout } from "../hooks/useLogout";
+import toast from "react-hot-toast";
 
 const Topbar = () => {
   const { data: user } = useAuth();
+  const logoutMutation = useLogout();
+
+  const navigate = useNavigate();
+
+  /**
+   * Handles user logout by calling the logout mutation and providing feedback via toast notifications.
+   */
+  const handleLogout = async () => {
+    try {
+      const response = await logoutMutation.mutateAsync();
+      console.log("Logout response: ", response);
+      toast("You have been logged out.");
+
+      // Navigate cleanly back to login page
+      navigate("/sign-in");
+    } catch (error: any) {
+      toast(error.response?.data?.error || "Failed to logout.");
+      console.error("Logout error: ", error.response);
+    }
+  };
 
   return (
     <div className="flex justify-between items-center bg-black h-15 px-5 sticky top-0 z-999">
       {/* Left side: logo and title */}
-      <Link className="flex gap-1" to="/">
+      <Link className="flex gap-1 mr-4" to="/">
         <img className="size-9" src="/finmark_logo.png" alt="FinMark Logo" />
         <p className="text-white text-2xl font-bold">FinMark</p>
       </Link>
 
-      {/* Middle: search bar */}
-      <aside>
+      {/* Search */}
+      <aside className="flex-1 max-w-4xl">
         <input
-          className="bg-white p-2 rounded w-200 placeholder:text-slate-500 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full bg-white p-2 rounded placeholder:text-slate-500 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Search FinMark"
         />
       </aside>
 
       {/* Right side: action buttons */}
-      <aside className="flex items-center gap-6">
+      <aside className="flex items-center gap-6 ml-4">
         <Link
           to={
             user?.role === "customer"
@@ -85,6 +107,47 @@ const Topbar = () => {
               strokeWidth="4"
               strokeLinecap="round"
               strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+
+        {/* User Profile */}
+        <Link
+          to="#"
+          className="flex items-center gap-3 border-l border-white/20 pl-4"
+        >
+          <div className="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center font-semibold">
+            {user?.firstName?.charAt(0).toUpperCase() ?? "U"}
+          </div>
+
+          <div className="hidden md:flex flex-col leading-none">
+            <span className="text-white text-sm font-medium">
+              {user?.firstName}
+            </span>
+            <span className="text-slate-300 text-xs">
+              {user?.role === "merchant" ? "Merchant" : "Customer"}
+            </span>
+          </div>
+        </Link>
+
+        {/* Logout */}
+        <button
+          onClick={handleLogout}
+          className="text-white hover:text-red-300 transition-colors cursor-pointer"
+          aria-label="Logout"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3-3H9m0 0 3-3m-3 3 3 3"
             />
           </svg>
         </button>

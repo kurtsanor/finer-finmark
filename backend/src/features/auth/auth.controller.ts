@@ -61,3 +61,23 @@ export const getMe = async (
     next(error);
   }
 };
+
+/**
+ * Handles user sign-out requests by clearing the authentication cookie.
+ * @returns A success message confirming the user has been signed out
+ */
+export const signOut = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+    res.status(200).json({ message: "Sign out successful" });
+  } catch (error) {
+    next(error);
+  }
+};

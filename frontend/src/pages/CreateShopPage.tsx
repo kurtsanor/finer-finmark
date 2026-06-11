@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 import { z } from "zod";
 import { useCreateShop } from "../hooks/useCreateShop";
+import { useNavigate } from "react-router-dom";
 
 export const createShopSchema = z.object({
   name: z
@@ -37,6 +38,8 @@ const CreateShopPage = () => {
     },
   });
 
+  const navigate = useNavigate();
+
   const createShopMutation = useCreateShop();
 
   /**
@@ -50,9 +53,7 @@ const CreateShopPage = () => {
       console.log(response.data);
 
       // Redirect to seller center layout because backend asynchronously shifts role to merchant
-      setTimeout(() => {
-        window.location.href = "/seller-centre/products";
-      }, 1500);
+      navigate("/seller-centre/products");
     } catch (error: any) {
       toast(
         error.response?.data?.error ||

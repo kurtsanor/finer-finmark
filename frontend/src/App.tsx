@@ -11,6 +11,7 @@ import SellerLayout from "./layouts/SellerLayout";
 import SellerProductsPage from "./pages/SellerProductsPage";
 import CreateProductPage from "./pages/CreateProductPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import SellerRoute from "./routes/SellerRoute";
 
 function App() {
   return (
@@ -30,9 +31,11 @@ function App() {
             <Route path="/create-shop" element={<CreateShopPage />} />
           </Route>
           {/* Seller centre layout and routes */}
-          <Route path="/seller-centre" element={<SellerLayout />}>
-            <Route path="products" element={<SellerProductsPage />} />
-            <Route path="products/new" element={<CreateProductPage />} />
+          <Route element={<SellerRoute />}>
+            <Route path="/seller-centre" element={<SellerLayout />}>
+              <Route path="products" element={<SellerProductsPage />} />
+              <Route path="products/new" element={<CreateProductPage />} />
+            </Route>
           </Route>
         </Route>
       </Routes>

@@ -2,22 +2,20 @@
 
 /*
  * Global styles
-
  * Centralized place for application-wide styles and customizations
  * that complement Tailwind's utility classes.
  */
 @theme {
+  --font-sans: "Figtree", sans-serif;
+
   --color-brand-blue: #2c94de;
   --color-brand-blue-hover: #1a78bc;
   --color-brand-dark: #1e293b;
-  /* --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono); */
 }
 
 @layer base {
   body {
-    /* Explicitly tell the body to use the theme's sans font */
-    /* font-family: var(--font-sans); */
+    font-family: var(--font-sans);
   }
 
   * {

@@ -49,7 +49,7 @@ const CartPage = () => {
       </div>
       <div className="flex justify-between gap-10 flex-1">
         <div className="flex flex-col">
-          <h3 className="font-medium">{item.productId.shopId.name}</h3>
+          <h3 className="font-semibold">{item.productId.shopId.name}</h3>
           <p className="line-clamp-2 mb-5">{item.productId.name}</p>
           <NumberStepper
             value={item.quantity}
@@ -65,24 +65,10 @@ const CartPage = () => {
           </p>
           <button
             onClick={() => handleRemoveItem(item.productId._id)}
-            className="p-1 mt-3 transition-colors text-neutral-500 hover:text-red-600 w-fit"
+            className="mt-3 transition-colors text-neutral-500 hover:text-red-600 w-fit hover:bg-red-100 rounded p-2"
             aria-label="Remove item"
           >
-            <svg
-              xmlns="http://w3.org"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="w-6 h-6"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path d="M6 7h12M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 7h14Z" />
-              <path d="M10 11v6M14 11v6" />
-            </svg>
+            <img src="/trash.png" alt="Remove" className="w-5 h-5" />
           </button>
         </aside>
       </div>

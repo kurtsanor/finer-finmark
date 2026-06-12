@@ -27,7 +27,7 @@ const ShopPage = () => {
           />
         </div>
         <div className="pt-1 p-2">
-          <p className="font-bold">{product.shopId.name}</p>
+          <p className="font-semibold">{product.shopId.name}</p>
           <p className="line-clamp-2">{product.name}</p>
           <div className="flex mt-4 gap-1">
             <span className="text-sm mt-1">PHP</span>

@@ -1,7 +1,16 @@
+import toast from "react-hot-toast";
+import { useDeleteProduct } from "../hooks/useDeleteProduct";
 import { useOwnerProducts } from "../hooks/useOwnerProducts";
+import { Link } from "react-router-dom";
 
 const SellerProductsPage = () => {
   const { data: products } = useOwnerProducts();
+  const deleteProductMutation = useDeleteProduct();
+
+  const handleDelete = async (id: string) => {
+    await deleteProductMutation.mutateAsync(id);
+    toast("Product has been deleted");
+  };
 
   const productCard = products?.map((product, i) => (
     <div
@@ -34,8 +43,8 @@ const SellerProductsPage = () => {
 
       <div className="p-0 mt-2 flex border-t border-neutral-200">
         {/* Left Action Button: Edit Inventory */}
-        <button
-          onClick={() => console.log(`Edit item ${i + 1}`)}
+        <Link
+          to={`/seller-centre/products/${product._id}/edit`}
           className="w-1/2 flex items-center justify-center gap-1.5 py-2.5 text-sm font-semibold text-neutral-700 bg-white hover:bg-neutral-50 active:bg-neutral-100 border-r border-neutral-200 transition-colors cursor-pointer"
         >
           <svg
@@ -53,11 +62,11 @@ const SellerProductsPage = () => {
             />
           </svg>
           Edit
-        </button>
+        </Link>
 
         {/* Right Action Button: Delete Inventory */}
         <button
-          onClick={() => console.log(`Delete item ${i + 1}`)}
+          onClick={() => handleDelete(product._id)}
           className="w-1/2 flex items-center justify-center gap-1.5 py-2.5 text-sm font-semibold text-red-600 bg-white hover:bg-red-50/50 active:bg-red-50 transition-colors cursor-pointer"
         >
           <svg

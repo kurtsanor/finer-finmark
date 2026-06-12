@@ -1,20 +1,42 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Button } from "../components/Button";
-import { useCreateProduct } from "../hooks/useCreateProduct";
 import {
   type CreateProductFormValues,
   createProductSchema,
 } from "../schemas/product";
+import { useProduct } from "../hooks/useProduct";
+import type { Product } from "../types/product.types";
+import { useUpdateProduct } from "../hooks/useUpdateProduct";
+
+interface EditProductFormProps {
+  product: Product | undefined;
+}
 
 /*
- * CreateProductPage
- * Renders a dedicated administrative workspace form for listing new inventory items.
+ * EditProductPage
+ * Renders a dedicated administrative workspace form for editing existing inventory items.
  */
-const CreateProductPage = () => {
+const EditProductPage = () => {
+  const { id } = useParams();
+
+  const { data: product, isLoading } = useProduct(id!);
+
+  console.log(product);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return <EditProductForm product={product} />;
+};
+
+const EditProductForm = ({ product }: EditProductFormProps) => {
   const navigate = useNavigate();
+
+  const useUpdateProductMutation = useUpdateProduct();
 
   const {
     register,
@@ -24,33 +46,34 @@ const CreateProductPage = () => {
     resolver: zodResolver(createProductSchema),
     mode: "onSubmit",
     defaultValues: {
-      name: "",
-      description: "",
-      price: undefined,
-      category: undefined,
+      name: product?.name || "",
+      description: product?.description || "",
+      price: product?.price || 0,
+      category: product?.category || "",
     },
   });
 
-  const useCreateProductMutation = useCreateProduct();
-
   /**
-   * Dispatches the validated product creation payload to the product-service microservice.
+   * Dispatches the validated product update payload to the product-service microservice.
    * @param data - Form validated properties via Zod.
    */
   const onSubmit = async (data: CreateProductFormValues) => {
     try {
-      const response = await useCreateProductMutation.mutateAsync(data);
-      console.log("Product creation response: ", response.data);
-      toast.success("Product has been added!");
+      const response = await useUpdateProductMutation.mutateAsync({
+        _id: product!._id,
+        ...data,
+      });
+      console.log("Product update response: ", response.data);
+      toast.success("Product has been updated!");
 
       // Navigate cleanly back inventory grid page
       navigate("/seller-centre/products");
     } catch (error: any) {
       toast.error(
         error.response?.data?.error ||
-          "Failed to publish item to marketplace catalog.",
+          "Failed to update product in marketplace catalog.",
       );
-      console.error("Product listing error: ", error.response);
+      console.error("Product update error: ", error.response);
     }
   };
 
@@ -65,16 +88,16 @@ const CreateProductPage = () => {
           Products
         </Link>
         <span>/</span>
-        <span className="text-black">Add New Product</span>
+        <span className="text-black">Edit Product</span>
       </nav>
 
       {/* Header Segment */}
       <header className="pb-6 border-b border-neutral-200">
         <h1 className="text-2xl font-bold tracking-tight text-black">
-          Add New Product
+          Edit Product
         </h1>
         <p className="text-sm text-neutral-600 mt-1 tracking-tight">
-          Publish a new inventory stock item into your public marketplace
+          Update the details of your inventory item in the public marketplace
           storefront catalog.
         </p>
       </header>
@@ -190,7 +213,7 @@ const CreateProductPage = () => {
             loadingText="Publishing Item..."
             className="bg-black hover:bg-neutral-900 text-white px-5 py-2 rounded font-semibold tracking-tight transition-colors"
           >
-            Publish Product
+            Update Product
           </Button>
         </div>
       </form>
@@ -198,4 +221,4 @@ const CreateProductPage = () => {
   );
 };
 
-export default CreateProductPage;
+export default EditProductPage;

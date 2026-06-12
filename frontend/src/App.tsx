@@ -13,6 +13,7 @@ import CreateProductPage from "./pages/CreateProductPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SellerRoute from "./routes/SellerRoute";
 import NotFoundPage from "./pages/NotFoundPage";
+import EditProductPage from "./pages/EditProductPage";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/seller-centre" element={<SellerLayout />}>
               <Route path="products" element={<SellerProductsPage />} />
               <Route path="products/new" element={<CreateProductPage />} />
+              <Route path="products/:id/edit" element={<EditProductPage />} />
             </Route>
           </Route>
         </Route>

@@ -3,6 +3,11 @@ import { Shop } from "./shop.model.js";
 import type { CreateShopDto, ShopDocument } from "./shop.types.js";
 import * as userService from "../users/user.service.js";
 
+/**
+ * Creates a new shop for the specified user.
+ * @param data The data for the new shop, including the user ID and shop details.
+ * @returns The created shop document.
+ */
 export const create = async (data: CreateShopDto): Promise<ShopDocument> => {
   try {
     // Find the user by ID

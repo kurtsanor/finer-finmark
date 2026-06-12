@@ -5,6 +5,7 @@ import type {
   CreateProductDto,
   ProductDocument,
   ProductDto,
+  UpdateProductDto,
 } from "./product.types.js";
 
 /**
@@ -28,6 +29,7 @@ export const create = async (
     description: data.description,
     price: data.price,
     shopId: existingShop._id,
+    category: data.category,
     imageUrl: data.imageUrl || null,
   });
 
@@ -80,5 +82,111 @@ export const getAll = async (): Promise<ProductDto[]> => {
     return products;
   } catch (error) {
     throw new Error("Error fetching products");
+  }
+};
+
+/**
+ * Update a product by its ID.
+ * @param data The updated product data.
+ * @returns A promise resolving to the updated product document.
+ */
+export const updateById = async (
+  data: UpdateProductDto,
+): Promise<ProductDocument> => {
+  let error = new Error() as any;
+  try {
+    // Check if the product exists
+    const product = await Product.findById(data._id);
+    if (!product) {
+      error.message = "Product not found";
+      error.status = 404;
+      throw error;
+    }
+
+    // Check if the user is the owner of the product
+    const userShop = await Shop.findOne({ userId: data.userId });
+    if (!userShop) {
+      error.message = "Forbidden: You do not have a shop";
+      error.status = 403;
+      throw error;
+    }
+
+    // Check if the product belongs to the user's shop
+    if (product.shopId.toString() !== userShop._id.toString()) {
+      error.message = "Forbidden: You are not the owner of this product";
+      error.status = 403;
+      throw error;
+    }
+
+    // Transfer the properties from the DTO to the product document
+    Object.assign(product, data);
+
+    // Save the updated product document
+    await product.save();
+
+    return product;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Delete a product by its ID.
+ * @param id The ID of the product to delete.
+ * @param userId The ID of the user attempting to delete the product.
+ * @returns A promise resolving to the deleted product document.
+ */
+export const deleteById = async (id: string, userId: string) => {
+  let error = new Error() as any;
+  try {
+    // Check if the product exists
+    const product = await Product.findById(id);
+    if (!product) {
+      error.message = "Product not found";
+      error.status = 404;
+      throw error;
+    }
+
+    // Check if the user is the owner of the product
+    const userShop = await Shop.findOne({ userId });
+    if (!userShop) {
+      error.message = "Forbidden: You do not have a shop";
+      error.status = 403;
+      throw error;
+    }
+
+    // Check if the product belongs to the user's shop
+    if (product.shopId.toString() !== userShop._id.toString()) {
+      error.message = "Forbidden: You are not the owner of this product";
+      error.status = 403;
+      throw error;
+    }
+
+    // If all checks pass, delete the product
+    return product.deleteOne();
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Retrieves a product by its ID.
+ * @param id The ID of the product to retrieve.
+ * @returns A promise resolving to the product document.
+ */
+export const getById = async (id: string): Promise<ProductDocument> => {
+  try {
+    // Check if the product exists
+    const product = await Product.findById(id);
+    if (!product) {
+      const error = new Error("Product not found") as any;
+      error.status = 404;
+      throw error;
+    }
+
+    // If the product exists, return it
+    return product;
+  } catch (error) {
+    throw error;
   }
 };

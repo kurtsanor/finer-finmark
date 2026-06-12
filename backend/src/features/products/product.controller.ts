@@ -44,7 +44,9 @@ export const getOwnerProducts = async (
     const products = await productService.getOwnerProducts(user.userId);
     console.log("hey");
 
-    res.json({ message: "Products fetched successfully", data: products });
+    res
+      .status(200)
+      .json({ message: "Products fetched successfully", data: products });
   } catch (error) {
     next(error);
   }
@@ -61,7 +63,84 @@ export const getAll = async (
 ) => {
   try {
     const products = await productService.getAll();
-    res.json({ message: "All products fetched successfully", data: products });
+    res
+      .status(200)
+      .json({ message: "All products fetched successfully", data: products });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Update a product by its ID.
+ * @returns a JSON response with the updated product and a success message.
+ */
+export const updateById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = req.user as JwtClaims;
+    const updatedProduct = await productService.updateById({
+      ...req.body,
+      userId: user.userId,
+    });
+
+    res
+      .status(200)
+      .json({ message: "Product updated successfully", data: updatedProduct });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Delete a product by its ID.
+ * @returns a JSON response with a success message upon successful deletion.
+ */
+export const deleteById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    // Extract user information and product ID from the request
+    const user = req.user as JwtClaims;
+
+    // Ensure the product ID is a string
+    const productId = req.params.id as string;
+
+    // Call the service to delete the product
+    await productService.deleteById(productId, user.userId);
+
+    // Send a success response
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Retrieves a product by its ID.
+ * @returns a JSON response with the fetched product and a success message.
+ */
+export const getById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    // Ensure the product ID is a string
+    const productId = req.params.id as string;
+
+    // Call the service to get the product by ID
+    const product = await productService.getById(productId);
+
+    // Send a success response with the fetched product
+    res
+      .status(200)
+      .json({ message: "Product fetched successfully", data: product });
   } catch (error) {
     next(error);
   }

@@ -1,4 +1,7 @@
-import type { CreateProductDto } from "../types/product.types";
+import type {
+  CreateProductDto,
+  UpdateProductDto,
+} from "../types/product.types";
 import axiosInstance from "../utils/axiosInstance";
 
 /**
@@ -37,6 +40,54 @@ export const getOwnerProducts = async () => {
 export const getAllProducts = async () => {
   try {
     const response = await axiosInstance.get("/api/products");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Updates a product by its ID.
+ * @param data The updated product data
+ * @returns The updated product, or an error if the request fails
+ * @throws An error if the request fails
+ */
+export const updateProductById = async (data: UpdateProductDto) => {
+  try {
+    const response = await axiosInstance.patch(
+      `/api/products/${data._id}`,
+      data,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Deletes a product by its ID.
+ * @param id The ID of the product to delete
+ * @returns The response message from the delete request
+ * @throws An error if the request fails
+ */
+export const deleteProductById = async (id: string) => {
+  try {
+    const response = await axiosInstance.delete(`/api/products/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Fetches a product by its ID.
+ * @param id The ID of the product to fetch
+ * @returns The product data, or an error if the request fails
+ * @throws An error if the request fails
+ */
+export const getProductById = async (id: string) => {
+  try {
+    const response = await axiosInstance.get(`/api/products/${id}`);
     return response.data;
   } catch (error) {
     throw error;

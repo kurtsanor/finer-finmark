@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import * as authService from "./auth.service.js";
-import * as userService from "../users/user.service.js";
+import * as userService from "../user/user.service.js";
 
 /**
  * Handles user sign-up requests

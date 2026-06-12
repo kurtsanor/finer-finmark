@@ -1,9 +1,19 @@
+import toast from "react-hot-toast";
+import { useSetCartItem } from "../hooks/useSetCartItem";
 import { useProducts } from "../hooks/useProducts";
 
 const ShopPage = () => {
   const { data: products } = useProducts();
+  const setCartItemMutation = useSetCartItem();
 
-  console.log(products);
+  const handleAddToCart = async (productId: string) => {
+    try {
+      await setCartItemMutation.mutateAsync({ productId, quantity: 1 });
+      toast("Added to cart!");
+    } catch (error: any) {
+      toast(error.response?.data?.error || "Error adding to cart");
+    }
+  };
 
   const productCard = products?.map((product, i) => (
     <div key={product._id} className="flex flex-col h-full justify-between">
@@ -30,7 +40,10 @@ const ShopPage = () => {
 
       {/* Button Section */}
       <div className="p-2 pt-0 mt-2">
-        <button className="w-full flex items-center justify-center gap-2 rounded-lg bg-black py-2 text-sm font-semibold text-white transition-colors hover:bg-slate-800 active:scale-[0.99]">
+        <button
+          onClick={() => handleAddToCart(product._id)}
+          className="w-full flex items-center justify-center gap-2 rounded-lg bg-black py-2 text-sm font-semibold text-white transition-colors hover:bg-slate-800 active:scale-[0.99]"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -64,7 +77,6 @@ const ShopPage = () => {
         </p>
       </header>
       <main className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {/* max-w-7xl centers the layout cleanly on huge displays */}
         {productCard}
       </main>
     </div>

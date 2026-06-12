@@ -1,29 +1,90 @@
+import { toast } from "react-hot-toast";
 import NumberStepper from "../components/NumberStepper";
+import { useCart } from "../hooks/useCart";
+import { useSetCartItem } from "../hooks/useSetCartItem";
+import { useDeleteCartItem } from "../hooks/useDeleteCartItem";
 
 const CartPage = () => {
-  const cartItems = Array.from({ length: 3 }, (_, i) => (
-    <div key={i} className="flex gap-4 py-2">
+  const { data: items = [], isLoading, error } = useCart();
+  const cartItemMutation = useSetCartItem();
+  const removeItemMutation = useDeleteCartItem();
+
+  const handleQuantityChange = async (
+    productId: string,
+    newQuantity: number,
+  ) => {
+    try {
+      await cartItemMutation.mutateAsync({ productId, quantity: newQuantity });
+    } catch (error) {
+      console.error("Error updating cart item quantity:", error);
+      toast("Failed to update cart item. Please try again.");
+    }
+  };
+
+  const handleRemoveItem = async (productId: string) => {
+    try {
+      await removeItemMutation.mutateAsync(productId);
+      toast("Item removed from cart.");
+    } catch (error) {
+      console.error("Error removing cart item:", error);
+      toast("Failed to remove item from cart. Please try again.");
+    }
+  };
+
+  if (isLoading) {
+    return <p>Loading cart...</p>;
+  }
+
+  console.log(items);
+
+  const cartItems = items?.map((item, i) => (
+    <div key={item.productId._id} className="flex gap-4 py-2">
       {/* put a background color on the wrapper container */}
       <div className="bg-slate-100 h-40 w-40 flex items-center justify-center p-1 rounded">
         <img
           className="h-full object-contain mix-blend-multiply rounded"
           src="/ball.png" // Even if this has a solid white BG, it will blend away
-          alt={`Product ${i + 1}`}
+          alt={item.productId._id}
         />
       </div>
       <div className="flex justify-between gap-10 flex-1">
-        <div>
-          <h3 className="font-medium">addidas</h3>
-          <p className="line-clamp-2 mb-5">
-            FIFA World Cup 26™ Trionda Host Nation League Soccer Ball
-          </p>
+        <div className="flex flex-col">
+          <h3 className="font-medium">{item.productId.shopId.name}</h3>
+          <p className="line-clamp-2 mb-5">{item.productId.name}</p>
           <NumberStepper
-            value={1}
-            onChange={(newValue) => console.log("New quantity:", newValue)}
+            value={item.quantity}
+            onChange={(newQuantity) =>
+              handleQuantityChange(item.productId._id, newQuantity)
+            }
             min={1}
           />
         </div>
-        <p className="text-lg font-bold ">PHP1,530</p>
+        <aside className="flex flex-col items-end">
+          <p className="text-lg font-bold ">
+            PHP {item.productId.price.toFixed(2)}
+          </p>
+          <button
+            onClick={() => handleRemoveItem(item.productId._id)}
+            className="p-1 mt-3 transition-colors text-neutral-500 hover:text-red-600 w-fit"
+            aria-label="Remove item"
+          >
+            <svg
+              xmlns="http://w3.org"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-6 h-6"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M6 7h12M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 7h14Z" />
+              <path d="M10 11v6M14 11v6" />
+            </svg>
+          </button>
+        </aside>
       </div>
     </div>
   ));
@@ -39,7 +100,7 @@ const CartPage = () => {
       </header>
       <div className="flex gap-10">
         <main className="flex-1 flex flex-col">
-          {cartItems.length > 0 ? (
+          {items.length > 0 ? (
             <>{cartItems}</>
           ) : (
             <p className="text-center text-gray-500 py-20">
@@ -50,8 +111,19 @@ const CartPage = () => {
         <aside className="border border-neutral-300 w-80 h-fit rounded">
           <div className="p-4">
             <h3 className="text-lg">Subtotal</h3>
-            <p className="text-lg font-bold">(1 item): PHP 1,530.18</p>
-            <button className="w-full flex items-center justify-center gap-2 rounded-lg bg-black py-2 mt-5 font-semibold text-white transition-colors hover:bg-slate-800 active:scale-[0.99]">
+            <p className="text-lg font-bold">
+              ({items.length} item/s): PHP{" "}
+              {items
+                .reduce(
+                  (total, item) => total + item.productId.price * item.quantity,
+                  0,
+                )
+                .toFixed(2)}
+            </p>
+            <button
+              disabled={items.length === 0}
+              className="w-full flex items-center disabled:opacity-50 disabled:hover:bg-black justify-center gap-2 rounded-lg bg-black py-2 mt-5 font-semibold text-white transition-colors hover:bg-slate-800 active:scale-[0.99]"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

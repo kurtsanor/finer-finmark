@@ -1,5 +1,5 @@
-import { User } from "../users/user.model.js";
-import type { UserType } from "../users/user.types.js";
+import { User } from "../user/user.model.js";
+import type { UserType } from "../user/user.types.js";
 import type { SignInRequest, SignUpRequest } from "./auth.types.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

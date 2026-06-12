@@ -37,7 +37,7 @@ const Topbar = () => {
       {/* Search */}
       <aside className="flex-1 max-w-4xl">
         <input
-          className="w-full bg-white p-2 rounded placeholder:text-slate-500 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full bg-white p-2 px-3 rounded placeholder:text-slate-500 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Search FinMark"
         />
       </aside>

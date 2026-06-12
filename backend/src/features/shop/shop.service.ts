@@ -1,7 +1,7 @@
-import { User } from "../users/user.model.js";
+import { User } from "../user/user.model.js";
 import { Shop } from "./shop.model.js";
 import type { CreateShopDto, ShopDocument } from "./shop.types.js";
-import * as userService from "../users/user.service.js";
+import * as userService from "../user/user.service.js";
 
 /**
  * Creates a new shop for the specified user.

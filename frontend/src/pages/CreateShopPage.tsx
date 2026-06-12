@@ -2,22 +2,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../components/Button";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-
-import { z } from "zod";
 import { useCreateShop } from "../hooks/useCreateShop";
 import { useNavigate } from "react-router-dom";
-
-export const createShopSchema = z.object({
-  name: z
-    .string()
-    .min(3, "Shop name must be at least 3 characters")
-    .max(100, "Shop name cannot exceed 100 characters"),
-  description: z
-    .string()
-    .min(10, "Please provide a more detailed shop description"),
-});
-
-export type CreateShopFormValues = z.infer<typeof createShopSchema>;
+import { type CreateShopFormValues, createShopSchema } from "../schemas/shop";
 
 /*
  * CreateShopPage

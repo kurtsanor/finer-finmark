@@ -41,7 +41,7 @@ const NumberStepper = ({
       <input
         type="number"
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
+        readOnly
         className="h-10 w-16 appearance-none text-center focus:outline-none"
       />
 

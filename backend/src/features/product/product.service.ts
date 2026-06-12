@@ -1,5 +1,5 @@
 import type { Types } from "mongoose";
-import { Shop } from "../shops/shop.model.js";
+import { Shop } from "../shop/shop.model.js";
 import { Product } from "./product.model.js";
 import type {
   CreateProductDto,

@@ -1,7 +1,11 @@
+import { useOwnerProducts } from "../hooks/useOwnerProducts";
+
 const SellerProductsPage = () => {
-  const productCard = Array.from({ length: 20 }, (_, i) => (
+  const { data: products } = useOwnerProducts();
+
+  const productCard = products?.map((product, i) => (
     <div
-      key={i}
+      key={product._id}
       className="flex flex-col h-full justify-between border rounded border-neutral-200 bg-white overflow-hidden"
     >
       <div>
@@ -9,25 +13,25 @@ const SellerProductsPage = () => {
         <div className="bg-slate-100 h-48 w-full flex items-center justify-center p-1 rounded-t">
           <img
             className="h-full object-contain mix-blend-multiply rounded"
-            src="/ball.png"
-            alt={`Product ${i + 1}`}
+            src={product.imageUrl || "/ball.png"}
+            alt={product.name}
           />
         </div>
 
         {/* Product Information Body */}
         <div className="pt-1 p-2">
-          <p className="font-bold">addidas</p>
-          <p className="line-clamp-2">
-            FIFA World Cup 26™ Trionda Host Nation League Soccer Ball
-          </p>
+          <p className="font-bold">{product.shopId.name}</p>
+          <p className="line-clamp-2">{product.name}</p>
           <div className="flex mt-4 gap-1">
             <span className="text-sm mt-1">PHP</span>
-            <span className="font-semibold text-xl"> 3,500.00</span>
+            <span className="font-semibold text-xl">
+              {" "}
+              {product.price.toFixed(2)}
+            </span>
           </div>
         </div>
       </div>
 
-      {/* 📦 Zero-Padding Split Action Layout Panel */}
       <div className="p-0 mt-2 flex border-t border-neutral-200">
         {/* Left Action Button: Edit Inventory */}
         <button

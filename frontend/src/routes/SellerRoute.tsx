@@ -12,7 +12,9 @@ const SellerRoute = () => {
     return <Navigate to="/sign-in" replace />;
   }
 
-  if (user.role !== "merchant") {
+  if (user.role != "merchant") {
+    console.log("Not a merchant");
+
     return <Navigate to="/shop" replace />;
   }
 

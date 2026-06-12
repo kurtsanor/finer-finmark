@@ -6,5 +6,7 @@ const router = express.Router();
 
 // Route to create a new product (requires authentication)
 router.post("/", authenticate, productController.create);
+router.get("/me", authenticate, productController.getOwnerProducts);
+router.get("/", authenticate, productController.getAll);
 
 export default router;

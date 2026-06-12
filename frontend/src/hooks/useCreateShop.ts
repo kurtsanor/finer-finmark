@@ -6,8 +6,8 @@ export const useCreateShop = () => {
 
   return useMutation({
     mutationFn: createShop,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ["auth"],
       });
     },

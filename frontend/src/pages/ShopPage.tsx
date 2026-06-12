@@ -1,23 +1,29 @@
+import { useProducts } from "../hooks/useProducts";
+
 const ShopPage = () => {
-  const productCard = Array.from({ length: 20 }, (_, i) => (
-    <div key={i} className="flex flex-col h-full justify-between">
+  const { data: products } = useProducts();
+
+  console.log(products);
+
+  const productCard = products?.map((product, i) => (
+    <div key={product._id} className="flex flex-col h-full justify-between">
       <div>
         {/* put a background color on the wrapper container */}
         <div className="bg-slate-100 h-48 w-full flex items-center justify-center p-1 rounded">
           <img
             className="h-full object-contain mix-blend-multiply rounded"
-            src="/ball.png" // Even if this has a solid white BG, it will blend away
-            alt={`Product ${i + 1}`}
+            src={product.imageUrl || "/ball.png"}
+            alt={product.name}
           />
         </div>
         <div className="pt-1 p-2">
-          <p className="font-bold">addidas</p>
-          <p className="line-clamp-2">
-            FIFA World Cup 26™ Trionda Host Nation League Soccer Ball
-          </p>
+          <p className="font-bold">{product.shopId.name}</p>
+          <p className="line-clamp-2">{product.name}</p>
           <div className="flex mt-4 gap-1">
             <span className="text-sm mt-1">PHP</span>
-            <span className="font-semibold text-xl"> 3,500.00</span>
+            <span className="font-semibold text-xl">
+              {product.price.toFixed(2)}
+            </span>
           </div>
         </div>
       </div>

@@ -49,7 +49,7 @@ const CreateShopPage = () => {
   const onSubmit = async (data: CreateShopFormValues) => {
     try {
       const response = await createShopMutation.mutateAsync(data);
-      toast("Shop created successfully!");
+      toast("Shop created successfully! You are now a seller.");
       console.log(response.data);
 
       // Redirect to seller center layout because backend asynchronously shifts role to merchant

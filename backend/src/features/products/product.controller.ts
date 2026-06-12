@@ -29,3 +29,40 @@ export const create = async (
     next(error);
   }
 };
+
+/**
+ * Get all products of the shop that is owned by a specific user.
+ * @returns a JSON response with the list of products and a success message.
+ */
+export const getOwnerProducts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = req.user as JwtClaims;
+    const products = await productService.getOwnerProducts(user.userId);
+    console.log("hey");
+
+    res.json({ message: "Products fetched successfully", data: products });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Get all products.
+ * @returns a JSON response with the list of all products and a success message.
+ */
+export const getAll = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const products = await productService.getAll();
+    res.json({ message: "All products fetched successfully", data: products });
+  } catch (error) {
+    next(error);
+  }
+};

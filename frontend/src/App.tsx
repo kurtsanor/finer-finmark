@@ -12,6 +12,7 @@ import SellerProductsPage from "./pages/SellerProductsPage";
 import CreateProductPage from "./pages/CreateProductPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SellerRoute from "./routes/SellerRoute";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             </Route>
           </Route>
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

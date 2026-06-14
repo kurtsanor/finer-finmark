@@ -57,7 +57,7 @@ const CreateProductPage = () => {
   return (
     <div className="max-w-4xl mx-auto mt-4 p-4 sm:p-6 bg-white rounded-xl">
       {/* Structural Management Navigation Breadcrumbs */}
-      <nav className="mb-4 text-xs font-semibold text-neutral-500 tracking-tight uppercase flex gap-2">
+      <nav className="mb-4 text-sm font-semibold text-neutral-500 tracking-tight flex gap-2">
         <Link
           to="/seller-centre/products"
           className="hover:text-black transition-colors"

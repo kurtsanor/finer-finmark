@@ -37,9 +37,9 @@ export const getOwnerProducts = async () => {
  * @returns A list of all products, or an error if the request fails
  * @throws An error if the request fails
  */
-export const getAllProducts = async () => {
+export const getAllProducts = async (page: number) => {
   try {
-    const response = await axiosInstance.get("/api/products");
+    const response = await axiosInstance.get(`/api/products?page=${page}`);
     return response.data;
   } catch (error) {
     throw error;

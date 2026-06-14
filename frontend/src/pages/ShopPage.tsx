@@ -1,9 +1,15 @@
 import toast from "react-hot-toast";
 import { useSetCartItem } from "../hooks/useSetCartItem";
 import { useProducts } from "../hooks/useProducts";
+import Pagination from "../components/Pagination";
+import { useSearchParams } from "react-router-dom";
 
 const ShopPage = () => {
-  const { data: products } = useProducts();
+  // controlls pagination number
+  const [searchParams, setSearchParams] = useSearchParams({ page: "1" });
+  const page = Number(searchParams.get("page") || 1);
+
+  const { data: paginationData } = useProducts(page);
   const setCartItemMutation = useSetCartItem();
 
   const handleAddToCart = async (productId: string) => {
@@ -15,7 +21,7 @@ const ShopPage = () => {
     }
   };
 
-  const productCard = products?.map((product, i) => (
+  const productCard = paginationData?.data?.data?.map((product, i) => (
     <div key={product._id} className="flex flex-col h-full justify-between">
       <div>
         {/* put a background color on the wrapper container */}
@@ -76,9 +82,16 @@ const ShopPage = () => {
           vendors.
         </p>
       </header>
-      <main className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+      <main className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mb-10">
         {productCard}
       </main>
+      <Pagination
+        currentPage={page}
+        totalPages={paginationData?.data?.totalPages || 1}
+        onPageChange={(page) => {
+          setSearchParams({ page: page.toString() });
+        }}
+      />
     </div>
   );
 };

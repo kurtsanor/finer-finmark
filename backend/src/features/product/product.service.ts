@@ -68,18 +68,34 @@ export const getOwnerProducts = async (
  * Get all products.
  * @returns A promise resolving to an array of product documents.
  */
-export const getAll = async (): Promise<ProductDto[]> => {
+export const getAll = async (page?: number): Promise<any> => {
+  const PAGESIZE = 24;
+  const pageNumber = page ?? 1;
+  const skip = (pageNumber - 1) * PAGESIZE;
   try {
     // Fetch the shop name as well to avoid an additional query in the controller
     const products = await Product.find()
       .populate<{
         shopId: { _id: Types.ObjectId; name: string };
       }>("shopId", "name")
-      .lean();
+      .sort({ createdAt: -1 })
+      .lean()
+      .skip(skip)
+      .limit(PAGESIZE);
 
-    console.log(products);
+    // Get the total count of products for pagination
+    const totalCount = await Product.countDocuments();
 
-    return products;
+    // Calculate total pages
+    const totalPages = Math.ceil(totalCount / PAGESIZE);
+
+    // Return the products along with pagination info
+    return {
+      page: pageNumber,
+      count: totalCount,
+      totalPages,
+      data: products,
+    };
   } catch (error) {
     throw new Error("Error fetching products");
   }

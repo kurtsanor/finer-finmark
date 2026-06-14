@@ -28,3 +28,13 @@ export type Product = {
     name: string;
   };
 };
+
+export type PaginatedProductsResponse = {
+  message: string;
+  data: {
+    data: Product[];
+    page: number;
+    totalPages: number;
+    count: number;
+  };
+};

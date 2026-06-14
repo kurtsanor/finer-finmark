@@ -61,8 +61,19 @@ export const getAll = async (
   res: Response,
   next: NextFunction,
 ) => {
+  // retrive page number from request query
+  const page = req.query.page;
+  let parsedPage;
+
+  if (page) {
+    parsedPage = Number(page);
+  }
+
+  if (!parsedPage || isNaN(parsedPage) || parsedPage < 1) {
+    throw new Error(`Invalid page number: ${page}`);
+  }
   try {
-    const products = await productService.getAll();
+    const products = await productService.getAll(parsedPage);
     res
       .status(200)
       .json({ message: "All products fetched successfully", data: products });

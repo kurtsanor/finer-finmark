@@ -1,10 +1,12 @@
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import NumberStepper from "../components/NumberStepper";
 import { useCart } from "../hooks/useCart";
 import { useSetCartItem } from "../hooks/useSetCartItem";
 import { useDeleteCartItem } from "../hooks/useDeleteCartItem";
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const { data: items = [], isLoading, error } = useCart();
   const cartItemMutation = useSetCartItem();
   const removeItemMutation = useDeleteCartItem();
@@ -108,6 +110,7 @@ const CartPage = () => {
             </p>
             <button
               disabled={items.length === 0}
+              onClick={() => navigate("/checkout")}
               className="w-full flex items-center disabled:opacity-50 disabled:hover:bg-black justify-center gap-2 rounded-lg bg-black py-2 mt-5 font-semibold text-white transition-colors hover:bg-slate-800 active:scale-[0.99]"
             >
               <svg

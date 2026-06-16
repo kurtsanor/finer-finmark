@@ -14,6 +14,9 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import SellerRoute from "./routes/SellerRoute";
 import NotFoundPage from "./pages/NotFoundPage";
 import EditProductPage from "./pages/EditProductPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import OrdersPage from "./pages/OrdersPage";
+import SellerOrdersPage from "./pages/SellerOrdersPage";
 
 function App() {
   return (
@@ -30,6 +33,8 @@ function App() {
             <Route path="/" element={<OverviewPage />} />
             <Route path="/shop" element={<ShopPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/orders" element={<OrdersPage />} />
             <Route path="/create-shop" element={<CreateShopPage />} />
           </Route>
           {/* Seller centre layout and routes */}
@@ -38,6 +43,7 @@ function App() {
               <Route path="products" element={<SellerProductsPage />} />
               <Route path="products/new" element={<CreateProductPage />} />
               <Route path="products/:id/edit" element={<EditProductPage />} />
+              <Route path="orders" element={<SellerOrdersPage />} />
             </Route>
           </Route>
         </Route>

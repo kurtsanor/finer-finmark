@@ -10,6 +10,7 @@ import { authenticate } from "./middlewares/authMiddleware.js";
 import shopRoutes from "./features/shop/shop.routes.js";
 import productRoutes from "./features/product/product.routes.js";
 import cartRoutes from "./features/cart/cart.routes.js";
+import orderRoutes from "./features/order/order.routes.js";
 
 // Initialize environment variables
 dotenv.config();
@@ -34,7 +35,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/shops", shopRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/carts", cartRoutes);
-
+app.use("/api/orders", orderRoutes);
 /*
  * Centralized error handler keeps API responses consistent.
  */

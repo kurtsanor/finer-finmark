@@ -63,7 +63,7 @@ export const signIn = async (data: SignInRequest): Promise<string> => {
 
     const token = jwt.sign(
       { userId: user._id, email: user.email, role: user.role },
-      process.env.JWT_SECRET || ("your_jwt_secret" as string),
+      process.env.JWT_SECRET || ("your_jwt_secret_key" as string),
       { expiresIn: "1h" },
     );
 

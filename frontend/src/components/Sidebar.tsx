@@ -5,7 +5,7 @@ import { Fragment } from "react/jsx-runtime";
 const Sidebar = () => {
   const pathname = useLocation().pathname;
 
-  console.log(pathname);
+  // console.log(pathname);
 
   const navigations = customerNavigations.map((nav) => (
     <Fragment key={nav.category}>

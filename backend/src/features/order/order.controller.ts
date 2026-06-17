@@ -8,16 +8,17 @@ import * as orderService from "./order.service.js";
  */
 
 export const createOrder = async (
-    req: Request, 
-    res: Response,
-     next: NextFunction) => {
-        try {
-            const user = req.user as JwtClaims;
-            const order = await orderService.createOrder(user.userId, req.body);
-            res.status(201).json({ message: "Order placed successfully", data: order });
-        } catch (error) {
-            next(error);
-        }
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = req.user as JwtClaims;
+    const order = await orderService.createOrder(user.userId, req.body);
+    res.status(201).json({ message: "Order placed successfully", data: order });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -25,31 +26,35 @@ export const createOrder = async (
  * @returns a JSON response with the list of orders and a success message.
  */
 export const getBuyerOrders = async (
-    req: Request, 
-    res: Response,
-    next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction,
 ) => {
-    try {
-        const user = req.user as JwtClaims;
-        const orders = await orderService.getBuyerOrders(user.userId);
-        res.status(200).json({ message: "Orders retrieved successfully", data: orders });
-    } catch (error) {
-        next(error);
-    }
+  try {
+    const user = req.user as JwtClaims;
+    const orders = await orderService.getBuyerOrders(user.userId);
+    res
+      .status(200)
+      .json({ message: "Orders retrieved successfully", data: orders });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getSellerOrders = async (
-    req: Request, 
-    res: Response,
-    next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction,
 ) => {
-    try {
-        const user = req.user as JwtClaims;
-        const orders = await orderService.getSellerOrders(user.userId);
-        res.status(200).json({ message: "Orders retrieved successfully", data: orders });
-    } catch (error) {
-        next(error);
-    }
+  try {
+    const user = req.user as JwtClaims;
+    const orders = await orderService.getSellerOrders(user.userId);
+    res
+      .status(200)
+      .json({ message: "Orders retrieved successfully", data: orders });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -58,17 +63,27 @@ export const getSellerOrders = async (
  */
 
 export const updateOrderStatus = async (
-    req: Request, 
-    res: Response,
-    next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction,
 ) => {
-    try {
-        const user = req.user as JwtClaims;
-        const { orderId } = req.params;
-        const updatedOrder = await orderService.updateOrderStatus(orderId as string, user.userId, req.body.status);
-        res.status(200).json({ message: "Order status updated successfully", data: updatedOrder });
-    }
-    catch (error) {
-        next(error);
-    }
+  try {
+    const user = req.user as JwtClaims;
+    const { orderId } = req.params;
+    console.log("Received request to update order status", {
+      orderId,
+      status: req.body,
+    });
+    const updatedOrder = await orderService.updateOrderStatus(
+      orderId as string,
+      user.userId,
+      req.body,
+    );
+    res.status(200).json({
+      message: "Order status updated successfully",
+      data: updatedOrder,
+    });
+  } catch (error) {
+    next(error);
+  }
 };

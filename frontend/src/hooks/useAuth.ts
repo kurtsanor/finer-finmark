@@ -11,7 +11,7 @@ const useAuth = () => {
     queryKey: ["auth"],
     queryFn: async () => {
       const response = await getMe();
-      console.log("User: ", response.data);
+      // console.log("User: ", response.data);
 
       return response.data;
     },

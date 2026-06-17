@@ -48,9 +48,17 @@ const CheckoutPage = () => {
     0,
   );
 
-  const fields: { id: keyof CheckoutFormData["shippingAddress"]; label: string; placeholder: string }[] = [
+  const fields: {
+    id: keyof CheckoutFormData["shippingAddress"];
+    label: string;
+    placeholder: string;
+  }[] = [
     { id: "fullName", label: "Full Name", placeholder: "Juan dela Cruz" },
-    { id: "address", label: "Address", placeholder: "123 Rizal St, Barangay 1" },
+    {
+      id: "address",
+      label: "Address",
+      placeholder: "123 Rizal St, Barangay 1",
+    },
     { id: "city", label: "City", placeholder: "Manila" },
     { id: "postalCode", label: "Postal Code", placeholder: "1000" },
     { id: "phoneNumber", label: "Phone Number", placeholder: "09XX XXX XXXX" },
@@ -60,7 +68,9 @@ const CheckoutPage = () => {
     <div className="max-w-7xl mx-auto p-4">
       <header className="pb-4">
         <h2 className="text-xl font-bold tracking-tight">Checkout</h2>
-        <p className="text-sm mt-1">Enter your shipping details to complete your order.</p>
+        <p className="text-sm mt-1">
+          Enter your shipping details to complete your order.
+        </p>
       </header>
 
       <form
@@ -68,7 +78,7 @@ const CheckoutPage = () => {
         className="flex gap-10"
       >
         {/* Shipping form */}
-        <main className="flex-1 flex flex-col gap-1 border border-neutral-200 p-5 h-fit">
+        <main className="flex-1 flex flex-col gap-1 border border-neutral-200 p-5 h-fit rounded">
           <h3 className="font-semibold text-base mb-2">Shipping Information</h3>
           {fields.map(({ id, label, placeholder }) => (
             <div key={id} className="flex flex-col mb-3">
@@ -96,7 +106,10 @@ const CheckoutPage = () => {
             <h3 className="text-lg font-semibold mb-3">Order Summary</h3>
             <div className="flex flex-col gap-2 mb-4">
               {items.map((item) => (
-                <div key={item.productId._id} className="flex justify-between text-sm">
+                <div
+                  key={item.productId._id}
+                  className="flex justify-between text-sm"
+                >
                   <span className="line-clamp-1 flex-1 pr-2">
                     {item.productId.name} × {item.quantity}
                   </span>
@@ -114,7 +127,7 @@ const CheckoutPage = () => {
               type="submit"
               isLoading={isSubmitting || mutation.isPending}
               loadingText="Placing order..."
-              className="w-full bg-black hover:bg-neutral-900 text-white py-2 mt-5 tracking-tight transition-colors"
+              className="w-full bg-black hover:bg-neutral-900 text-white py-2 mt-5 tracking-tight transition-colors rounded"
             >
               Place Order
             </Button>

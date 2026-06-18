@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import useSellerOrders from "../hooks/useSellerOrders";
 import useUpdateOrderStatus from "../hooks/useUpdateOrderStatus";
+import { getCountryConfig } from "../constants/seaCountries";
 import type { OrderStatus } from "../types/order.types";
 
 const STATUS_COLOR: Record<OrderStatus, string> = {
@@ -125,7 +126,9 @@ const SellerOrdersPage = () => {
 
                     <p>
                       {order.shippingAddress.address},{" "}
-                      {order.shippingAddress.city}
+                      {order.shippingAddress.city},{" "}
+                      {getCountryConfig(order.shippingAddress.country)?.name ??
+                        order.shippingAddress.country}
                     </p>
 
                     <p>

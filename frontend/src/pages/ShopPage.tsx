@@ -3,6 +3,7 @@ import { useSetCartItem } from "../hooks/useSetCartItem";
 import { useProducts } from "../hooks/useProducts";
 import Pagination from "../components/Pagination";
 import { useSearchParams } from "react-router-dom";
+import { useCart } from "../hooks/useCart";
 
 const ShopPage = () => {
   // controlls pagination number
@@ -12,14 +13,21 @@ const ShopPage = () => {
   const { data: paginationData } = useProducts(page);
   const setCartItemMutation = useSetCartItem();
 
+  const { data: cartItems = [] } = useCart();
+
   const handleAddToCart = async (productId: string) => {
-    try {
-      await setCartItemMutation.mutateAsync({ productId, quantity: 1 });
-      toast("Added to cart!");
-    } catch (error: any) {
-      toast(error.response?.data?.error || "Error adding to cart");
-    }
-  };
+  try {
+    const existingItem = cartItems.find(
+      (item) => item.productId._id === productId
+    );
+    const newQuantity = (existingItem?.quantity ?? 0) + 1;
+
+    await setCartItemMutation.mutateAsync({ productId, quantity: newQuantity });
+    toast("Added to cart!");
+  } catch (error: any) {
+    toast(error.response?.data?.error || "Error adding to cart");
+  }
+};
 
   const productCard = paginationData?.data?.data?.map((product, i) => (
     <div key={product._id} className="flex flex-col h-full justify-between">

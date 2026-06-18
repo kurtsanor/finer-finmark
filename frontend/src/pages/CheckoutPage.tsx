@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { checkoutSchema, type CheckoutFormData } from "../schemas/checkout";
+import { SEA_COUNTRIES, getCountryConfig } from "../constants/seaCountries";
 import { createOrder } from "../api/order.api";
 import { useCart } from "../hooks/useCart";
 import { Button } from "../components/Button";
@@ -16,6 +17,7 @@ const CheckoutPage = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
@@ -24,11 +26,14 @@ const CheckoutPage = () => {
         fullName: "",
         address: "",
         city: "",
+        country: "PH",
         postalCode: "",
         phoneNumber: "",
       },
     },
   });
+
+  const selectedCountry = getCountryConfig(watch("shippingAddress.country"));
 
   const mutation = useMutation({
     mutationFn: (data: CheckoutFormData) => createOrder(data.shippingAddress),
@@ -48,8 +53,8 @@ const CheckoutPage = () => {
     0,
   );
 
-  const fields: {
-    id: keyof CheckoutFormData["shippingAddress"];
+  const textFields: {
+    id: "fullName" | "address" | "city";
     label: string;
     placeholder: string;
   }[] = [
@@ -60,8 +65,6 @@ const CheckoutPage = () => {
       placeholder: "123 Rizal St, Barangay 1",
     },
     { id: "city", label: "City", placeholder: "Manila" },
-    { id: "postalCode", label: "Postal Code", placeholder: "1000" },
-    { id: "phoneNumber", label: "Phone Number", placeholder: "09XX XXX XXXX" },
   ];
 
   return (
@@ -80,7 +83,7 @@ const CheckoutPage = () => {
         {/* Shipping form */}
         <main className="flex-1 flex flex-col gap-1 border border-neutral-200 p-5 h-fit rounded">
           <h3 className="font-semibold text-base mb-2">Shipping Information</h3>
-          {fields.map(({ id, label, placeholder }) => (
+          {textFields.map(({ id, label, placeholder }) => (
             <div key={id} className="flex flex-col mb-3">
               <label htmlFor={id} className="text-sm font-medium mb-1">
                 {label}
@@ -98,6 +101,83 @@ const CheckoutPage = () => {
               )}
             </div>
           ))}
+
+          <div className="flex flex-col mb-3">
+            <label htmlFor="country" className="text-sm font-medium mb-1">
+              Country
+            </label>
+            <select
+              {...register("shippingAddress.country")}
+              id="country"
+              className="border border-neutral-200 px-3 py-1.5 tracking-tight bg-neutral-50"
+            >
+              {SEA_COUNTRIES.map((country) => (
+                <option key={country.code} value={country.code}>
+                  {country.name}
+                </option>
+              ))}
+            </select>
+            {errors.shippingAddress?.country && (
+              <span className="text-xs text-red-500 mt-1">
+                {errors.shippingAddress.country.message}
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-col mb-3">
+            <label htmlFor="postalCode" className="text-sm font-medium mb-1">
+              Postal Code
+            </label>
+            <input
+              {...register("shippingAddress.postalCode")}
+              id="postalCode"
+              placeholder={selectedCountry?.postalCodeExample ?? "Postal code"}
+              className="border border-neutral-200 px-3 py-1.5 tracking-tight bg-neutral-50"
+            />
+            {errors.shippingAddress?.postalCode ? (
+              <span className="text-xs text-red-500 mt-1">
+                {errors.shippingAddress.postalCode.message}
+              </span>
+            ) : (
+              selectedCountry && (
+                <span className="text-xs text-neutral-400 mt-1">
+                  {selectedCountry.postalCodeLength}{" "}
+                  {selectedCountry.postalCodeType === "alphanumeric"
+                    ? "alphanumeric characters"
+                    : "digits"}{" "}
+                  for {selectedCountry.name} (e.g. {selectedCountry.postalCodeExample})
+                </span>
+              )
+            )}
+          </div>
+
+          <div className="flex flex-col mb-3">
+            <label htmlFor="phoneNumber" className="text-sm font-medium mb-1">
+              Phone Number
+            </label>
+            <input
+              {...register("shippingAddress.phoneNumber")}
+              id="phoneNumber"
+              placeholder={
+                selectedCountry
+                  ? `0XXXXXXXXX or ${selectedCountry.dialCode}XXXXXXXXX`
+                  : "09XX XXX XXXX"
+              }
+              className="border border-neutral-200 px-3 py-1.5 tracking-tight bg-neutral-50"
+            />
+            {errors.shippingAddress?.phoneNumber ? (
+              <span className="text-xs text-red-500 mt-1">
+                {errors.shippingAddress.phoneNumber.message}
+              </span>
+            ) : (
+              selectedCountry && (
+                <span className="text-xs text-neutral-400 mt-1">
+                  Local (0XXXXXXXXX) or international ({selectedCountry.dialCode}
+                  XXXXXXXXX) format
+                </span>
+              )
+            )}
+          </div>
         </main>
 
         {/* Order summary */}

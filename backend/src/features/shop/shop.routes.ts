@@ -1,10 +1,18 @@
 import express from "express";
 import * as shopController from "./shop.controller.js";
-import { authenticate } from "../../middlewares/authMiddleware.js";
+import {
+  authenticate,
+  authorizeRoles,
+} from "../../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-// Route to create a new shop (requires authentication)
-router.post("/", authenticate, shopController.create);
+// Only sellers can create shops
+router.post(
+  "/",
+  authenticate,
+  authorizeRoles("seller"),
+  shopController.create,
+);
 
 export default router;

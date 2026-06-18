@@ -70,10 +70,7 @@ export const updateOrderStatus = async (
   try {
     const user = req.user as JwtClaims;
     const { orderId } = req.params;
-    console.log("Received request to update order status", {
-      orderId,
-      status: req.body,
-    });
+    
     const updatedOrder = await orderService.updateOrderStatus(
       orderId as string,
       user.userId,

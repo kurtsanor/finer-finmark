@@ -61,10 +61,24 @@ export const signIn = async (data: SignInRequest): Promise<string> => {
       throw error;
     }
 
+    const jwtSecret = process.env.JWT_SECRET;
+
+    if (!jwtSecret) {
+      const error = new Error("JWT_SECRET is not configured") as any;
+      error.status = 500;
+      throw error;
+    }
+
     const token = jwt.sign(
-      { userId: user._id, email: user.email, role: user.role },
-      process.env.JWT_SECRET || ("your_jwt_secret_key" as string),
-      { expiresIn: "1h" },
+      {
+        userId: user._id,
+        email: user.email,
+        role: user.role,
+      },
+      jwtSecret,
+      {
+        expiresIn: "1h",
+      },
     );
 
     return token;

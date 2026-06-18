@@ -187,4 +187,51 @@ export const sellerNavigations = [
       },
     ],
   },
+  {
+    category: "Analytics & Reporting",
+    items: [
+      {
+        name: "Shop Analytics",
+        path: "/seller-centre/analytics/shop",
+        icon: (props: React.SVGProps<SVGSVGElement>) => (
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 28V18M4 28H28M11 28V10M18 28V4M25 28V14"
+              stroke="black"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        ),
+      },
+      {
+        name: "My Reports",
+        path: "/seller-centre/analytics/reports",
+        icon: (props: React.SVGProps<SVGSVGElement>) => (
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 28V18M4 28H28M11 28V10M18 28V4M25 28V14"
+              stroke="black"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        ),
+      },
+    ],
+  },
 ];

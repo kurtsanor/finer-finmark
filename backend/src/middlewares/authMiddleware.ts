@@ -8,6 +8,8 @@ declare global {
         userId: string;
         email: string;
         role: string;
+        iat: number;
+        exp: number;
       };
     }
   }
@@ -34,6 +36,8 @@ export const authenticate = (
       userId: string;
       email: string;
       role: string;
+      iat: number;
+      exp: number;
     };
 
     req.user = decoded;

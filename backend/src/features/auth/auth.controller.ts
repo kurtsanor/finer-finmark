@@ -34,6 +34,7 @@ export const signIn = async (
     res.cookie("accessToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     });
 
@@ -75,7 +76,9 @@ export const signOut = async (
     res.clearCookie("accessToken", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
     });
+
     res.status(200).json({ message: "Sign out successful" });
   } catch (error) {
     next(error);

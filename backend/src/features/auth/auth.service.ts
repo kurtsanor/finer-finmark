@@ -61,7 +61,7 @@ export const signIn = async (data: SignInRequest): Promise<string> => {
       throw error;
     }
 
-    const jwtSecret = process.env.JWT_SECRET;
+    const jwtSecret = process.env.JWT_SECRET || "your_jwt_secret_key";
 
     if (!jwtSecret) {
       const error = new Error("JWT_SECRET is not configured") as any;

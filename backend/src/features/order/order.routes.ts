@@ -5,10 +5,7 @@ import {
 } from "../../middlewares/authMiddleware.js";
 import { validateRequest } from "../../middlewares/validateRequest.js";
 import * as orderController from "./order.controller.js";
-import {
-  createOrderSchema,
-  updateOrderStatusSchema,
-} from "./order.schema.js";
+import { createOrderSchema, updateOrderStatusSchema } from "./order.schema.js";
 
 const router = express.Router();
 
@@ -26,14 +23,14 @@ router.get("/my-orders", authenticate, orderController.getBuyerOrders);
 router.get(
   "/seller",
   authenticate,
-  authorizeRoles("seller"),
+  authorizeRoles("merchant"),
   orderController.getSellerOrders,
 );
 
 router.patch(
   "/:orderId/status",
   authenticate,
-  authorizeRoles("seller"),
+  authorizeRoles("merchant"),
   validateRequest(updateOrderStatusSchema),
   orderController.updateOrderStatus,
 );

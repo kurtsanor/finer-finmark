@@ -11,7 +11,7 @@ const router = express.Router();
 router.post(
   "/",
   authenticate,
-  authorizeRoles("seller"),
+  authorizeRoles("merchant"),
   shopController.create,
 );
 

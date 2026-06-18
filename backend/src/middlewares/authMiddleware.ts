@@ -27,13 +27,7 @@ export const authenticate = (
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const jwtSecret = process.env.JWT_SECRET;
-
-  if (!jwtSecret) {
-    return res.status(500).json({
-      message: "Server configuration error",
-    });
-  }
+  const jwtSecret = process.env.JWT_SECRET || "your_jwt_secret_key";
 
   try {
     const decoded = jwt.verify(token, jwtSecret) as {

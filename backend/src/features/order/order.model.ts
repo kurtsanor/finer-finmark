@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import { COUNTRY_CODES } from "../../constants/seaCountries.js";
 
 const orderSchema = new Schema(
   {
@@ -59,6 +60,7 @@ const orderSchema = new Schema(
       fullName: { type: String, required: true },
       address: { type: String, required: true },
       city: { type: String, required: true },
+      country: { type: String, enum: COUNTRY_CODES, required: true },
       postalCode: { type: String, required: true },
       phoneNumber: { type: String, required: true },
     },

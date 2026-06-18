@@ -1,4 +1,5 @@
 import useMyOrders from "../hooks/useMyOrders";
+import { getCountryConfig } from "../constants/seaCountries";
 import type { OrderStatus, ShopOrder } from "../types/order.types";
 
 const STATUS_STEPS: OrderStatus[] = [
@@ -148,7 +149,9 @@ const OrdersPage = () => {
 
                   <p>
                     {order.shippingAddress.address},{" "}
-                    {order.shippingAddress.city}
+                    {order.shippingAddress.city},{" "}
+                    {getCountryConfig(order.shippingAddress.country)?.name ??
+                      order.shippingAddress.country}
                   </p>
 
                   <p>

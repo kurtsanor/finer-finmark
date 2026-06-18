@@ -1,3 +1,5 @@
+import type { CountryCode } from "../constants/seaCountries";
+
 export type OrderStatus = "placed" | "confirmed" | "shipped" | "delivered";
 
 export type OrderItemSnapshot = {
@@ -23,6 +25,7 @@ export type ShippingAddress = {
   fullName: string;
   address: string;
   city: string;
+  country: CountryCode;
   postalCode: string;
   phoneNumber: string;
 };

@@ -113,6 +113,7 @@ const EditProductForm = ({ product }: EditProductFormProps) => {
             {...register("name")}
             id="name"
             type="text"
+            maxLength={150}
             disabled={isSubmitting}
             placeholder="e.g., FIFA World Cup 26™ Trionda Host Nation League Soccer Ball"
             className="border border-neutral-200 px-3 py-1.5 tracking-tight bg-neutral-50 rounded outline-none transition-all placeholder:text-neutral-400 focus:border-black focus:ring-1 focus:ring-black disabled:opacity-50"
@@ -144,6 +145,8 @@ const EditProductForm = ({ product }: EditProductFormProps) => {
                 id="price"
                 type="number"
                 step="0.01"
+                min="0.01"
+                max="10000000"
                 disabled={isSubmitting}
                 placeholder="0.00"
                 className="w-full border border-neutral-200 pl-8 pr-3 py-1.5 tracking-tight bg-neutral-50 rounded outline-none transition-all placeholder:text-neutral-400 focus:border-black focus:ring-1 focus:ring-black disabled:opacity-50 "
@@ -165,6 +168,7 @@ const EditProductForm = ({ product }: EditProductFormProps) => {
               {...register("category")}
               id="category"
               type="text"
+              maxLength={100}
               disabled={isSubmitting}
               placeholder="e.g., Electronics, Clothing, Home & Garden"
               className="border border-neutral-200 px-3 py-1.5 tracking-tight bg-neutral-50 rounded outline-none transition-all placeholder:text-neutral-400 focus:border-black focus:ring-1 focus:ring-black disabled:opacity-50"
@@ -185,6 +189,7 @@ const EditProductForm = ({ product }: EditProductFormProps) => {
           <textarea
             {...register("description")}
             id="description"
+            maxLength={2000}
             disabled={isSubmitting}
             placeholder="Outline physical material compositions, sizing specs, package inclusions, and delivery fulfillment standards..."
             rows={6}

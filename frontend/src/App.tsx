@@ -17,6 +17,8 @@ import EditProductPage from "./pages/EditProductPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrdersPage from "./pages/OrdersPage";
 import SellerOrdersPage from "./pages/SellerOrdersPage";
+import ShopAnalyticsPage from "./pages/ShopAnalyticsPage";
+import MyReportsPage from "./pages/MyReportsPage";
 
 function App() {
   return (
@@ -44,6 +46,8 @@ function App() {
               <Route path="products/new" element={<CreateProductPage />} />
               <Route path="products/:id/edit" element={<EditProductPage />} />
               <Route path="orders" element={<SellerOrdersPage />} />
+              <Route path="analytics/shop" element={<ShopAnalyticsPage />} />
+              <Route path="analytics/reports" element={<MyReportsPage />} />
             </Route>
           </Route>
         </Route>

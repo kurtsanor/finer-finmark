@@ -1,4 +1,5 @@
 import type { Document, Types } from "mongoose";
+import type { CountryCode } from "../../constants/seaCountries.js";
 
 export type OrderStatus = "placed" | "confirmed" | "shipped" | "delivered";
 
@@ -14,6 +15,7 @@ export type ShippingAddress = {
     fullName: string;
     address: string;
     city: string;
+    country: CountryCode;
     postalCode: string;
     phoneNumber: string;
 };

@@ -44,9 +44,9 @@ const SignUpPage = () => {
       console.log(response);
 
       reset();
-    } catch (error) {
-      toast("An error occurred while creating your account");
-      console.error("Error signing up:", error);
+    } catch (error: any) {
+      toast(error.response?.data?.error || "An error occurred during sign-up");
+      console.log("An error occured: ", error.response);
     }
   };
 

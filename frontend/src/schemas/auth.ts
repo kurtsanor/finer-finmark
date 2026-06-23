@@ -23,9 +23,21 @@ export const signInSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
+export const resetPasswordSchema = z
+  .object({
+    token: z.string().email("Invalid reset token"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(8, "Confirm your password"),
+  })
+  .refine((values) => values.password === values.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
 /*
  * Type helpers inferred from the Zod schemas to keep form types
  * synchronized with validation rules.
  */
 export type SignUpFormValues = z.infer<typeof signUpSchema>;
 export type SignInFormValues = z.infer<typeof signInSchema>;
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;

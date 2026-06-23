@@ -23,6 +23,7 @@ app.use(morgan("combined"));
 app.use(express.json());
 app.use(cookieParser());
 
+console.log("Registering auth routes...");
 app.use("/api/auth", authRoutes);
 app.use("/api/shops", shopRoutes);
 app.use("/api/products", productRoutes);

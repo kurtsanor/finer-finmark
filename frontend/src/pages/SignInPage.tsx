@@ -5,6 +5,8 @@ import { signInSchema, type SignInFormValues } from "../schemas/auth";
 import axiosInstance from "../utils/axiosInstance";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import ResetPasswordModal from "../components/ResetPasswordModal";
+import { useState } from "react";
 
 /*
  * SignInPage
@@ -26,6 +28,7 @@ const SignInPage = () => {
   });
 
   const navigate = useNavigate();
+  const [showReset, setShowReset] = useState(false);
 
   /**
    * Form submission handler for signing in users.
@@ -45,6 +48,8 @@ const SignInPage = () => {
   };
 
   return (
+    <>
+    {showReset && <ResetPasswordModal onClose={() => setShowReset(false)} />}
     <form
       className="border border-neutral-200 sm:w-115 w-full flex flex-col bg-white p-5"
       onSubmit={handleSubmit(onSubmit)}
@@ -82,14 +87,20 @@ const SignInPage = () => {
         </span>
       )}
 
-      <div className="flex items-center mt-3 ml-0.5">
-        <input type="checkbox" id="remember" className="mr-2" />
-        <label
-          htmlFor="remember"
-          className="text-sm tracking-tight font-medium"
+      <div className="flex items-center justify-between mt-3 ml-0.5">
+        <div className="flex items-center">
+          <input type="checkbox" id="remember" className="mr-2" />
+          <label htmlFor="remember" className="text-sm tracking-tight font-medium">
+            Remember me
+          </label>
+        </div>
+        <button
+          type="button"
+          onClick={() => setShowReset(true)}
+          className="text-sm text-neutral-500 hover:text-black underline transition-colors"
         >
-          Remember me
-        </label>
+          Forgot password?
+        </button>
       </div>
 
       <Button
@@ -159,6 +170,7 @@ const SignInPage = () => {
         By signing in, you agree to the Terms of Service and Privacy Policy.
       </p>
     </form>
+    </>
   );
 };
 

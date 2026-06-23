@@ -10,6 +10,11 @@ export type SignInRequest = {
   password: string;
 };
 
+export type ResetPasswordRequest = {
+  email: string;
+  password: string;
+};
+
 export type JwtClaims = {
   userId: string;
   role: string;

@@ -6,4 +6,6 @@ export type UserType = Document & {
   email: string;
   password: string;
   role: "customer" | "merchant";
+  resetToken?: string | null;
+  resetTokenExpiration?: Date | null;
 };

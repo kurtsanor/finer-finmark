@@ -67,6 +67,19 @@ export const getMe = async (
  * Handles user sign-out requests by clearing the authentication cookie.
  * @returns A success message confirming the user has been signed out
  */
+export const resetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    await authService.resetPassword(req.body);
+    res.status(200).json({ message: "Password reset successful" });
+  }catch (error) {
+    next(error);
+  }
+};
+
 export const signOut = async (
   req: Request,
   res: Response,
@@ -84,3 +97,4 @@ export const signOut = async (
     next(error);
   }
 };
+

@@ -1,6 +1,6 @@
 import { User } from "../user/user.model.js";
 import type { UserType } from "../user/user.types.js";
-import type { SignInRequest, SignUpRequest } from "./auth.types.js";
+import type { ResetPasswordRequest, SignInRequest, SignUpRequest } from "./auth.types.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -86,3 +86,20 @@ export const signIn = async (data: SignInRequest): Promise<string> => {
     throw error;
   }
 };
+
+/**
+ * Finds a user by email and updates their password directly.
+ */
+export const resetPassword = async (data: ResetPasswordRequest): Promise<void> => {
+  const user = await User.findOne({ email: data.email });
+
+  if (!user) {
+    const error = new Error("Invalid or expired reset token") as any;
+    error.status = 400;
+    throw error;
+  }
+
+  user.password = await bcrypt.hash(data.password, 10);
+  await user.save();
+};
+

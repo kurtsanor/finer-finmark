@@ -1,5 +1,10 @@
 const STAT_CARDS = [
-  { label: "Total Revenue", value: "PHP 84,320.00", change: "+12.4%", up: true },
+  {
+    label: "Total Revenue",
+    value: "PHP 84,320.00",
+    change: "+12.4%",
+    up: true,
+  },
   { label: "Total Orders", value: "312", change: "+8.1%", up: true },
   { label: "Products Sold", value: "1,045", change: "+5.3%", up: true },
   { label: "Avg. Order Value", value: "PHP 3,500", change: "-2.7%", up: false },
@@ -22,7 +27,11 @@ const MONTHLY_SALES = [
 
 const TOP_PRODUCTS = [
   { name: "PUMA Speedcat ", sold: 183, revenue: "PHP 21,400.00" },
-  { name: "New Balance 550 Retro Sneakers", sold: 178, revenue: "PHP 8,900.00" },
+  {
+    name: "New Balance 550 Retro Sneakers",
+    sold: 178,
+    revenue: "PHP 8,900.00",
+  },
   { name: "Birkenstock Arizona", sold: 132, revenue: "PHP 13,200.00" },
   { name: "Nike Air Force 1", sold: 98, revenue: "PHP 9,800.00" },
   { name: "Vans Old Skool", sold: 76, revenue: "PHP 15,200.00" },
@@ -74,10 +83,13 @@ const ShopAnalyticsPage = () => {
         <p className="text-sm font-semibold mb-4">Monthly Revenue (PHP)</p>
         <div className="flex items-end gap-1.5 h-40">
           {MONTHLY_SALES.map((m) => (
-            <div key={m.month} className="flex flex-col items-center flex-1 gap-1">
+            <div
+              key={m.month}
+              className="flex flex-col items-center flex-1 gap-1"
+            >
               <div
                 className="w-full bg-black rounded-t"
-                style={{ height: `${(m.revenue / maxRevenue) * 100}%` }}
+                style={{ height: `${(m.revenue / maxRevenue) * 100}px` }}
               />
               <span className="text-[10px] text-neutral-500">{m.month}</span>
             </div>
@@ -91,13 +103,18 @@ const ShopAnalyticsPage = () => {
           <p className="text-sm font-semibold mb-3">Top Products</p>
           <div className="flex flex-col gap-2">
             {TOP_PRODUCTS.map((p, i) => (
-              <div key={p.name} className="flex items-center justify-between text-sm">
+              <div
+                key={p.name}
+                className="flex items-center justify-between text-sm"
+              >
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-neutral-400 w-4">{i + 1}</span>
                   <span className="truncate max-w-[160px]">{p.name}</span>
                 </div>
                 <div className="flex gap-4 text-right shrink-0">
-                  <span className="text-neutral-500 text-xs">{p.sold} sold</span>
+                  <span className="text-neutral-500 text-xs">
+                    {p.sold} sold
+                  </span>
                   <span className="font-medium text-xs">{p.revenue}</span>
                 </div>
               </div>
@@ -113,7 +130,10 @@ const ShopAnalyticsPage = () => {
               <div key={row.status} className="flex flex-col gap-1">
                 <div className="flex justify-between text-xs text-neutral-600">
                   <span>{row.status}</span>
-                  <span>{row.count} orders ({((row.count / totalOrders) * 100).toFixed(1)}%)</span>
+                  <span>
+                    {row.count} orders (
+                    {((row.count / totalOrders) * 100).toFixed(1)}%)
+                  </span>
                 </div>
                 <div className="w-full bg-neutral-100 rounded-full h-2">
                   <div

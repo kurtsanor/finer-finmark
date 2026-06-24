@@ -26,6 +26,8 @@ const STATUS_COLOR: Record<OrderStatus, string> = {
 const OrdersPage = () => {
   const { data: orders = [], isLoading } = useMyOrders();
 
+  console.log(orders);
+
   if (isLoading) return <p>Loading orders...</p>;
 
   return (
@@ -43,7 +45,7 @@ const OrdersPage = () => {
         </p>
       ) : (
         <div className="flex flex-col gap-6">
-          {orders.map((order) => (
+          {orders.map((order, i) => (
             <div
               key={order._id}
               className="border border-neutral-200 rounded p-5"
@@ -66,7 +68,7 @@ const OrdersPage = () => {
 
                   return (
                     <div
-                      key={`${order._id}-${shopOrder.shopId}`}
+                      key={shopOrder._id}
                       className="border border-neutral-100 rounded p-4"
                     >
                       {/* Shop Header */}
@@ -124,12 +126,22 @@ const OrdersPage = () => {
                       <div className="flex flex-col gap-2 border-t border-neutral-100 pt-3">
                         {shopOrder.items.map((item) => (
                           <div
-                            key={item.product}
-                            className="flex justify-between text-sm"
+                            key={item.product._id}
+                            className="flex justify-between text-sm items-center"
                           >
-                            <span>
-                              {item.name} × {item.quantity}
-                            </span>
+                            <div className="flex items-center gap-3">
+                              <div className="bg-slate-100">
+                                <img
+                                  src={item.product.imageUrl || "/ball.png"}
+                                  alt={item.name}
+                                  className="w-16 h-16 object-fit mix-blend-multiply rounded"
+                                />
+                              </div>
+
+                              <span>
+                                {item.name} × {item.quantity}
+                              </span>
+                            </div>
 
                             <span className="font-medium">
                               PHP {(item.price * item.quantity).toFixed(2)}

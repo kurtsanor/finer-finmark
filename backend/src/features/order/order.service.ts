@@ -108,8 +108,17 @@ export const createOrder = async (
 export const getBuyerOrders = async (buyerId: string) => {
   return Order.find({ buyerId })
     .populate({
-      path: "shopOrders.shopId",
-      select: "name",
+      path: "shopOrders",
+      populate: [
+        {
+          path: "shopId",
+          select: "name",
+        },
+        {
+          path: "items.product",
+          select: "name price imageUrl",
+        },
+      ],
     })
     .sort({ createdAt: -1 })
     .lean();
@@ -132,8 +141,17 @@ export const getSellerOrders = async (sellerId: string) => {
     "shopOrders.shopId": shop._id,
   })
     .populate({
-      path: "shopOrders.shopId",
-      select: "name",
+      path: "shopOrders",
+      populate: [
+        {
+          path: "shopId",
+          select: "name",
+        },
+        {
+          path: "items.product",
+          select: "name price imageUrl",
+        },
+      ],
     })
     .sort({ createdAt: -1 })
     .lean();

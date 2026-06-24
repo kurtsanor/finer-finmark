@@ -3,7 +3,12 @@ import type { CountryCode } from "../constants/seaCountries";
 export type OrderStatus = "placed" | "confirmed" | "shipped" | "delivered";
 
 export type OrderItemSnapshot = {
-  product: string;
+  product: {
+    name: string;
+    price: string;
+    _id: string;
+    imageUrl: string | null;
+  };
   name: string;
   price: number;
   quantity: number;
@@ -15,6 +20,7 @@ export type Shop = {
 };
 
 export type ShopOrder = {
+  _id: string;
   shopId: Shop;
   status: OrderStatus;
   subtotal: number;

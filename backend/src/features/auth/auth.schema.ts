@@ -13,6 +13,6 @@ export const signInSchema = z.object({
 });
 
 export const resetPasswordSchema = z.object({
-  token: z.string().trim().min(1, "Token is required"),
-  newPassword: z.string().min(8, "New password must be at least 8 characters"),
+  email: z.string().trim().email("Invalid email address"),
+  password: z.string().min(8, "New password must be at least 8 characters"),
 });

@@ -8,8 +8,8 @@ import toast from "react-hot-toast";
 const schema = z
   .object({
     email: z.string().trim().email("Enter a valid email address"),
-    password: z.string().min(3, "Password must be at least 3 characters"),
-    confirmPassword: z.string().min(3, "Confirm your password"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(8, "Confirm your password"),
   })
   .refine((v) => v.password === v.confirmPassword, {
     message: "Passwords do not match",
@@ -38,7 +38,11 @@ const ResetPasswordModal = ({ onClose }: Props) => {
       toast.success("Password reset successfully! You can now sign in.");
       onClose();
     } catch (error: any) {
-      toast.error(error.response?.data?.error || "No account found with that email.");
+      console.log(error.response);
+
+      toast.error(
+        error.response?.data?.error || "No account found with that email.",
+      );
     }
   };
 
@@ -76,7 +80,9 @@ const ResetPasswordModal = ({ onClose }: Props) => {
               className="border border-neutral-200 px-3 py-1.5 text-sm bg-neutral-50"
             />
             {errors.email && (
-              <span className="text-xs text-red-500 mt-1">{errors.email.message}</span>
+              <span className="text-xs text-red-500 mt-1">
+                {errors.email.message}
+              </span>
             )}
           </div>
 
@@ -90,12 +96,16 @@ const ResetPasswordModal = ({ onClose }: Props) => {
               className="border border-neutral-200 px-3 py-1.5 text-sm bg-neutral-50"
             />
             {errors.password && (
-              <span className="text-xs text-red-500 mt-1">{errors.password.message}</span>
+              <span className="text-xs text-red-500 mt-1">
+                {errors.password.message}
+              </span>
             )}
           </div>
 
           <div className="flex flex-col">
-            <label className="text-sm font-medium mb-1">Confirm new password</label>
+            <label className="text-sm font-medium mb-1">
+              Confirm new password
+            </label>
             <input
               {...register("confirmPassword")}
               disabled={isSubmitting}
@@ -104,7 +114,9 @@ const ResetPasswordModal = ({ onClose }: Props) => {
               className="border border-neutral-200 px-3 py-1.5 text-sm bg-neutral-50"
             />
             {errors.confirmPassword && (
-              <span className="text-xs text-red-500 mt-1">{errors.confirmPassword.message}</span>
+              <span className="text-xs text-red-500 mt-1">
+                {errors.confirmPassword.message}
+              </span>
             )}
           </div>
 

@@ -16,18 +16,21 @@ const ShopPage = () => {
   const { data: cartItems = [] } = useCart();
 
   const handleAddToCart = async (productId: string) => {
-  try {
-    const existingItem = cartItems.find(
-      (item) => item.productId._id === productId
-    );
-    const newQuantity = (existingItem?.quantity ?? 0) + 1;
+    try {
+      const existingItem = cartItems.find(
+        (item) => item.productId._id === productId,
+      );
+      const newQuantity = (existingItem?.quantity ?? 0) + 1;
 
-    await setCartItemMutation.mutateAsync({ productId, quantity: newQuantity });
-    toast("Added to cart!");
-  } catch (error: any) {
-    toast(error.response?.data?.error || "Error adding to cart");
-  }
-};
+      await setCartItemMutation.mutateAsync({
+        productId,
+        quantity: newQuantity,
+      });
+      toast("Added to cart!");
+    } catch (error: any) {
+      toast(error.response?.data?.error || "Error adding to cart");
+    }
+  };
 
   const productCard = paginationData?.data?.data?.map((product, i) => (
     <div key={product._id} className="flex flex-col h-full justify-between">

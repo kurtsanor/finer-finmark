@@ -1,4 +1,4 @@
-version: "3.8"
+# version: "3.8"
 
 services:
   mongo:
@@ -8,6 +8,44 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api_gateway
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api-gateway:/app
+      - /app/node_modules
+    environment:
+      - PORT=3000
+      - FRONTEND_URL=http://localhost:5173
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+    depends_on:
+      - auth-service
+      - mongo
+
+  auth-service:
+    build: ./services/auth-service
+    container_name: auth_service
+    volumes:
+      - ./services/auth-service:/app
+      - /app/node_modules
+    environment:
+      - PORT=3001
+      - MONGODB_URI=mongodb://mongo:27017/finmark
+    depends_on:
+      - mongo
+
+  product-service:
+    build: ./services/product-service
+    container_name: product_service
+    environment:
+      - PORT=3002
+      - MONGODB_URI=mongodb://mongo:27017/finmark
+    depends_on:
+      - mongo
 
 volumes:
   mongo_data: # Keeps data safe even if the container stops

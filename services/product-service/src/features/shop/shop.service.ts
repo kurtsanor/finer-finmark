@@ -1,0 +1,61 @@
+import { Shop } from "./shop.model.js";
+import type { CreateShopDto, ShopDocument } from "./shop.types.js";
+
+/**
+ * Creates a new shop for the specified user.
+ * @param data The data for the new shop, including the user ID and shop details.
+ * @returns The created shop document.
+ */
+export const create = async (data: CreateShopDto): Promise<ShopDocument> => {
+  try {
+    // Find the user by ID
+    // S2S Communication: Send a direct request to the internal container URL
+    const AUTH_INTERNAL_URL =
+      process.env.AUTH_SERVICE_URL || "http://auth-service:3001";
+
+    const response = await fetch(
+      `${AUTH_INTERNAL_URL}/api/auth/${data.userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          // Forward the identity info as a clean text header instead of a cookie
+          "x-user-id": JSON.stringify(data.userId),
+        },
+      },
+    ).then((res) => res.json());
+
+    // Find if the user already has a shop
+    const shop = await Shop.findOne({ userId: data.userId }).lean();
+
+    // If the user already has a shop, throw an error
+    if (shop) {
+      const error = new Error("User already has a shop") as any;
+      error.status = 400;
+      throw error;
+    }
+
+    // Create the shop
+    const newShop = await Shop.create(data);
+
+    // Update the user's role to "merchant" if it's not already
+    if (response.data.user?.role !== "merchant") {
+      // await userService.updateRole(data.userId.toString(), "merchant");
+      const response = await fetch(
+        `${AUTH_INTERNAL_URL}/api/auth/users?role=merchant`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            // Forward the identity info as a clean text header instead of a cookie
+            "x-user-id": JSON.stringify(data.userId),
+          },
+        },
+      ).then((res) => res.json());
+    }
+
+    return newShop;
+  } catch (error) {
+    throw error;
+  }
+};

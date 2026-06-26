@@ -4,6 +4,8 @@ import {
   authenticate,
   authorizeRoles,
 } from "../../middleware/auth.middleware.js";
+import { validateRequest } from "../../middleware/validate.middleware.js";
+import { productSchema } from "./product.schema.js";
 
 const router = express.Router();
 
@@ -11,6 +13,7 @@ router.post(
   "/",
   authenticate,
   authorizeRoles("merchant"),
+  validateRequest(productSchema),
   productController.create,
 );
 router.get(

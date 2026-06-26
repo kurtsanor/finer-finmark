@@ -14,16 +14,21 @@ export const create = async (data: CreateShopDto): Promise<ShopDocument> => {
       process.env.AUTH_SERVICE_URL || "http://auth-service:3001";
 
     const response = await fetch(
-      `${AUTH_INTERNAL_URL}/api/auth/${data.userId}`,
+      `${AUTH_INTERNAL_URL}/api/auth/users/${data.userId}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           // Forward the identity info as a clean text header instead of a cookie
-          "x-user-id": JSON.stringify(data.userId),
+          "x-user-id": data.userId.toString(),
         },
       },
-    ).then((res) => res.json());
+    ).then((res) => {
+      if (!res.ok) {
+        throw new Error(`Failed to fetch user: ${res.statusText}`);
+      }
+      return res.json();
+    });
 
     // Find if the user already has a shop
     const shop = await Shop.findOne({ userId: data.userId }).lean();
@@ -48,7 +53,7 @@ export const create = async (data: CreateShopDto): Promise<ShopDocument> => {
           headers: {
             "Content-Type": "application/json",
             // Forward the identity info as a clean text header instead of a cookie
-            "x-user-id": JSON.stringify(data.userId),
+            "x-user-id": data.userId.toString(),
           },
         },
       ).then((res) => res.json());

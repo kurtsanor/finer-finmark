@@ -112,7 +112,7 @@ export const getUserById = async (
     return next(error);
   }
 
-  if (userId !== req.params.id) {
+  if (userId.toString() !== req.params.id?.toString()) {
     const error = new Error("Unauthorized: User ID does not match") as any;
     error.status = 403;
     return next(error);

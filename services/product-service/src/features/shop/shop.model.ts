@@ -17,4 +17,7 @@ const shopSchema = new Schema(
   { timestamps: true },
 );
 
+shopSchema.index({ userId: 1 }, { unique: true });
+shopSchema.index({ name: 1 }, { unique: true });
+
 export const Shop = model("Shop", shopSchema);

@@ -20,7 +20,6 @@ export const upsertItem = async (userId: string, item: CartItem) => {
       throw error;
     }
 
-    // Verify that owners cannot add their own products to the cart
     // const product = await Product.findById(item.productId);
     const product = await fetch(
       `${PRODUCT_SERVICE_URL}/api/products/${item.productId}`,
@@ -38,31 +37,29 @@ export const upsertItem = async (userId: string, item: CartItem) => {
       throw new Error("Product not found");
     }
 
-    // Fetch the shop associated with the product to check ownership
-    // const shop = await Shop.findById(product.shopId).select("userId");
-    const shop = await fetch(
-      `${PRODUCT_SERVICE_URL}/api/shops/${product.shopId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-user": JSON.stringify({ userId }), // Pass the userId in the headers
-        },
-      },
-    )
-      .then((res) => res.json())
-      .then((data) => data.data);
-    if (!shop) {
-      throw new Error("Shop associated with this product not found");
-    }
-
-    if (shop.userId.toString() === userId) {
-      let error = new Error(
-        "You cannot add your own product to the cart",
-      ) as any;
-      error.status = 403;
-      throw error;
-    }
+    // [REMOVED FOR DEMO] Originally, the code fetched the shop tied to this
+    // product and rejected the request if shop.userId === userId, i.e. the
+    // seller trying to add their own product to their own cart:
+    //
+    //   const shop = await fetch(`${PRODUCT_SERVICE_URL}/api/shops/${product.shopId}`, {
+    //     method: "GET",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "x-user": JSON.stringify({ userId }),
+    //     },
+    //   }).then((res) => res.json()).then((data) => data.data);
+    //   if (!shop) {
+    //     throw new Error("Shop associated with this product not found");
+    //   }
+    //   if (shop.userId.toString() === userId) {
+    //     let error = new Error("You cannot add your own product to the cart") as any;
+    //     error.status = 403;
+    //     throw error;
+    //   }
+    //
+    // With this block gone, a seller can add their own product to their cart
+    // and complete a self-purchase, since order-service does not re-check
+    // ownership at checkout. This is the self-buying exploit being demoed.
 
     const cart = await Cart.findOne({ userId });
 

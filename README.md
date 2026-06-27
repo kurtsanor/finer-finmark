@@ -14,9 +14,8 @@ A modern, full-stack e-commerce marketplace platform with seller and buyer workf
 ### Buyer Features
 
 - **Shopping Cart**: Add, remove, and update product quantities
-- **Checkout**: Secure checkout process with multiple payment steps
+- **Checkout**: Secure checkout process
 - **Order Management**: View order history and track order status
-- **User Profile**: Manage account settings and preferences
 
 ### Seller Features
 
@@ -34,7 +33,7 @@ A modern, full-stack e-commerce marketplace platform with seller and buyer workf
 - **Pagination**: Efficient product listing navigation
 - **Product Details**: Comprehensive product information with images
 
-## 🏗 Architecture
+## Architecture
 
 The application follows a **Microservices Architecture** pattern:
 

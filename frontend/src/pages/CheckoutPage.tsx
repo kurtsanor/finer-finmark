@@ -44,6 +44,8 @@ const CheckoutPage = () => {
       navigate("/orders");
     },
     onError: (error: any) => {
+      console.log(error.response);
+
       toast(error.response?.data?.error || "Failed to place order");
     },
   });
@@ -145,7 +147,8 @@ const CheckoutPage = () => {
                   {selectedCountry.postalCodeType === "alphanumeric"
                     ? "alphanumeric characters"
                     : "digits"}{" "}
-                  for {selectedCountry.name} (e.g. {selectedCountry.postalCodeExample})
+                  for {selectedCountry.name} (e.g.{" "}
+                  {selectedCountry.postalCodeExample})
                 </span>
               )
             )}
@@ -172,7 +175,8 @@ const CheckoutPage = () => {
             ) : (
               selectedCountry && (
                 <span className="text-xs text-neutral-400 mt-1">
-                  Local (0XXXXXXXXX) or international ({selectedCountry.dialCode}
+                  Local (0XXXXXXXXX) or international (
+                  {selectedCountry.dialCode}
                   XXXXXXXXX) format
                 </span>
               )

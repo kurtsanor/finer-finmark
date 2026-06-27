@@ -64,3 +64,35 @@ export const create = async (data: CreateShopDto): Promise<ShopDocument> => {
     throw error;
   }
 };
+
+/**
+ * Finds a shop by its ID.
+ * @param shopId The ID of the shop to find.
+ * @returns The found shop or null if not found.
+ */
+export const findById = async (
+  shopId: string,
+): Promise<ShopDocument | null> => {
+  try {
+    const shop = (await Shop.findById(shopId).lean()) as ShopDocument | null;
+    return shop;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Finds a shop by the user ID.
+ * @param userId The ID of the user associated with the shop.
+ * @returns The found shop or null if not found.
+ */
+export const findByUserId = async (
+  userId: string,
+): Promise<ShopDocument | null> => {
+  try {
+    const shop = (await Shop.findOne({ userId }).lean()) as ShopDocument | null;
+    return shop;
+  } catch (error) {
+    throw error;
+  }
+};

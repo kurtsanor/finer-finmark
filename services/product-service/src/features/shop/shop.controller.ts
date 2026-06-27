@@ -31,3 +31,39 @@ export const create = async (
     next(error);
   }
 };
+
+/**
+ * Finds a shop by its ID.
+ * @returns The shop associated with the specified shop ID, or an error if not found
+ */
+export const findById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const shopId = req.params.id as string;
+    const shop = await shopService.findById(shopId);
+    res.status(200).json({ message: "Shop found", data: shop });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Finds a shop by the user ID.
+ * @returns The shop associated with the specified user ID, or an error if not found
+ */
+export const findUserShop = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const userId = req.user as JwtClaims;
+    const shop = await shopService.findByUserId(userId.userId);
+    res.status(200).json({ message: "Shop found", data: shop });
+  } catch (error) {
+    next(error);
+  }
+};

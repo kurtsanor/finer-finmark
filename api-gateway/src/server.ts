@@ -19,6 +19,12 @@ const AUTH_SERVICE_URL =
 const PRODUCT_SERVICE_URL =
   process.env.PRODUCT_SERVICE_URL || "http://localhost:3002";
 
+const ORDER_SERVICE_URL =
+  process.env.ORDER_SERVICE_URL || "http://localhost:3003";
+
+const CART_SERVICE_URL =
+  process.env.CART_SERVICE_URL || "http://localhost:3004";
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -64,6 +70,38 @@ app.use(
   authenticate,
   proxy(PRODUCT_SERVICE_URL, {
     proxyReqPathResolver: (req) => `/api/shops${req.url}`,
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      // Forward the user information from the request to the auth service
+      if (srcReq.user) {
+        proxyReqOpts.headers["x-user"] = JSON.stringify(srcReq.user);
+      }
+      return proxyReqOpts;
+    },
+  }),
+);
+
+// Order service proxy configuration
+app.use(
+  "/api/orders",
+  authenticate,
+  proxy(ORDER_SERVICE_URL, {
+    proxyReqPathResolver: (req) => `/api/orders${req.url}`,
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      // Forward the user information from the request to the auth service
+      if (srcReq.user) {
+        proxyReqOpts.headers["x-user"] = JSON.stringify(srcReq.user);
+      }
+      return proxyReqOpts;
+    },
+  }),
+);
+
+// Cart service proxy configuration
+app.use(
+  "/api/carts",
+  authenticate,
+  proxy(CART_SERVICE_URL, {
+    proxyReqPathResolver: (req) => `/api/carts${req.url}`,
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       // Forward the user information from the request to the auth service
       if (srcReq.user) {

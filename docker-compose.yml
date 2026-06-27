@@ -22,6 +22,8 @@ services:
       - FRONTEND_URL=http://localhost:5173
       - AUTH_SERVICE_URL=http://auth-service:3001
       - PRODUCT_SERVICE_URL=http://product-service:3002
+      - ORDER_SERVICE_URL=http://order-service:3003
+      - CART_SERVICE_URL=http://cart-service:3004
     depends_on:
       - auth-service
       - mongo
@@ -44,6 +46,29 @@ services:
     environment:
       - PORT=3002
       - MONGODB_URI=mongodb://mongo:27017/finmark
+      - AUTH_SERVICE_URL=http://auth-service:3001
+    depends_on:
+      - mongo
+
+  order-service:
+    build: ./services/order-service
+    container_name: order_service
+    environment:
+      - PORT=3003
+      - MONGODB_URI=mongodb://mongo:27017/finmark
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+      - CART_SERVICE_URL=http://cart-service:3004
+      - AUTH_SERVICE_URL=http://auth-service:3001
+    depends_on:
+      - mongo
+
+  cart-service:
+    build: ./services/cart-service
+    container_name: cart_service
+    environment:
+      - PORT=3004
+      - MONGODB_URI=mongodb://mongo:27017/finmark
+      - PRODUCT_SERVICE_URL=http://product-service:3002
     depends_on:
       - mongo
 

@@ -14,9 +14,6 @@ declare global {
   }
 }
 
-const AUTH_SERVICE_URL =
-  process.env.AUTH_SERVICE_URL || "http://localhost:3001";
-
 /**
  * Middleware to authenticate requests using JWT tokens.
  * @returns void
@@ -48,25 +45,12 @@ export const authenticate = (
  */
 export const authorizeRoles =
   (...allowedRoles: string[]) =>
-  async (req: Request, res: Response, next: NextFunction) => {
+  (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const user = await fetch(
-      `${AUTH_SERVICE_URL}/api/auth/users/${req.user.userId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-user-id": req.user.userId,
-        },
-      },
-    )
-      .then((res) => res.json())
-      .then((data) => data.data);
-
-    if (!allowedRoles.includes(user.role)) {
+    if (!allowedRoles.includes(req.user.role)) {
       return res.status(403).json({ message: "Forbidden" });
     }
 

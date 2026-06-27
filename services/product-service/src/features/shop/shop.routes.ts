@@ -13,5 +13,7 @@ router.post(
   validateRequest(shopSchema),
   shopController.create,
 );
+router.get("/me", authenticate, shopController.findUserShop);
+router.get("/:id", authenticate, shopController.findById);
 
 export default router;

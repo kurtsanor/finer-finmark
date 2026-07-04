@@ -5,9 +5,8 @@ import express, {
 } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import rateLimit from "express-rate-limit";
-import proxy from "express-http-proxy";
 import cookieParser from "cookie-parser";
+import { createProxyMiddleware } from "http-proxy-middleware";
 import authenticate from "./middleware/auth.middleware.js";
 
 // Load environment variables from .env file
@@ -39,12 +38,25 @@ app.use(
 // Cookie parser middleware to parse cookies from incoming requests
 app.use(cookieParser());
 
+// Health check route
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "UP", service: "api-gateway" });
+});
+
+// Helper to forward the authenticated user's info to downstream services
+const attachUserHeader = (proxyReq: any, req: Request) => {
+  if ((req as any).user) {
+    proxyReq.setHeader("x-user", JSON.stringify((req as any).user));
+  }
+};
+
 // Auth service proxy configuration
 app.use(
   "/api/auth",
-
-  proxy(AUTH_SERVICE_URL, {
-    proxyReqPathResolver: (req) => `/api/auth${req.url}`,
+  createProxyMiddleware({
+    target: AUTH_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: (path) => `/api/auth${path}`,
   }),
 );
 
@@ -52,14 +64,12 @@ app.use(
 app.use(
   "/api/products",
   authenticate,
-  proxy(PRODUCT_SERVICE_URL, {
-    proxyReqPathResolver: (req) => `/api/products${req.url}`,
-    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-      // Forward the user information from the request to the auth service
-      if (srcReq.user) {
-        proxyReqOpts.headers["x-user"] = JSON.stringify(srcReq.user);
-      }
-      return proxyReqOpts;
+  createProxyMiddleware({
+    target: PRODUCT_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: (path) => `/api/products${path}`,
+    on: {
+      proxyReq: attachUserHeader,
     },
   }),
 );
@@ -68,14 +78,12 @@ app.use(
 app.use(
   "/api/shops",
   authenticate,
-  proxy(PRODUCT_SERVICE_URL, {
-    proxyReqPathResolver: (req) => `/api/shops${req.url}`,
-    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-      // Forward the user information from the request to the auth service
-      if (srcReq.user) {
-        proxyReqOpts.headers["x-user"] = JSON.stringify(srcReq.user);
-      }
-      return proxyReqOpts;
+  createProxyMiddleware({
+    target: PRODUCT_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: (path) => `/api/shops${path}`,
+    on: {
+      proxyReq: attachUserHeader,
     },
   }),
 );
@@ -84,14 +92,12 @@ app.use(
 app.use(
   "/api/orders",
   authenticate,
-  proxy(ORDER_SERVICE_URL, {
-    proxyReqPathResolver: (req) => `/api/orders${req.url}`,
-    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-      // Forward the user information from the request to the auth service
-      if (srcReq.user) {
-        proxyReqOpts.headers["x-user"] = JSON.stringify(srcReq.user);
-      }
-      return proxyReqOpts;
+  createProxyMiddleware({
+    target: ORDER_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: (path) => `/api/orders${path}`,
+    on: {
+      proxyReq: attachUserHeader,
     },
   }),
 );
@@ -100,20 +106,19 @@ app.use(
 app.use(
   "/api/carts",
   authenticate,
-  proxy(CART_SERVICE_URL, {
-    proxyReqPathResolver: (req) => `/api/carts${req.url}`,
-    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-      // Forward the user information from the request to the auth service
-      if (srcReq.user) {
-        proxyReqOpts.headers["x-user"] = JSON.stringify(srcReq.user);
-      }
-      return proxyReqOpts;
+  createProxyMiddleware({
+    target: CART_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: (path) => `/api/carts${path}`,
+    on: {
+      proxyReq: attachUserHeader,
     },
   }),
 );
 
 // Add a catch-all 404 handler so unmapped paths don't hang
 app.use((req: Request, res: Response) => {
+  if (res.headersSent) return;
   res
     .status(404)
     .json({ error: "Not Found", message: "Route does not exist on Gateway" });
@@ -122,6 +127,9 @@ app.use((req: Request, res: Response) => {
 // If a microservice goes down, this stops the gateway from crashing and sends a proper 502
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error("API Gateway Intercepted Error:", err.message);
+  if (res.headersSent) {
+    return next(err);
+  }
   res.status(502).json({
     error: "Bad Gateway",
     message: "The downstream destination service is currently unreachable.",

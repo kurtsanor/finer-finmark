@@ -1,0 +1,103 @@
+services:
+  mongo:
+    image: mongo:4.4
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+
+  api-gateway:
+    image: finmark/api-gateway:1.0
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - FRONTEND_URL=http://localhost:5173
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+      - ORDER_SERVICE_URL=http://order-service:3003
+      - CART_SERVICE_URL=http://cart-service:3004
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        order: start-first
+
+  auth-service:
+    image: finmark/auth-service:1.0
+    environment:
+      - PORT=3001
+      - MONGODB_URI=mongodb://mongo:27017/finmark
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        order: start-first
+
+  product-service:
+    image: finmark/product-service:1.0
+    environment:
+      - PORT=3002
+      - MONGODB_URI=mongodb://mongo:27017/finmark
+      - AUTH_SERVICE_URL=http://auth-service:3001
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        order: start-first
+
+  order-service:
+    image: finmark/order-service:1.0
+    environment:
+      - PORT=3003
+      - MONGODB_URI=mongodb://mongo:27017/finmark
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+      - CART_SERVICE_URL=http://cart-service:3004
+      - AUTH_SERVICE_URL=http://auth-service:3001
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        order: start-first
+
+  cart-service:
+    image: finmark/cart-service:1.0
+    environment:
+      - PORT=3004
+      - MONGODB_URI=mongodb://mongo:27017/finmark
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        order: start-first
+
+volumes:
+  mongo_data:

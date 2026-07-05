@@ -39,6 +39,11 @@ const CreateShopPage = () => {
       toast("Shop created successfully! You are now a seller.");
       console.log(response.data);
 
+      // Update the user role in localStorage to reflect the new merchant status
+      const updatedUser = JSON.parse(localStorage.getItem("user")!);
+      updatedUser.role = "merchant";
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
       // Redirect to seller center layout because backend asynchronously shifts role to merchant
       navigate("/seller-centre/products");
     } catch (error: any) {

@@ -12,5 +12,15 @@ const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:3000",
   withCredentials: true,
 });
+// if the response is 401, redirect the user to the login page
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      window.location.href = "/sign-in";
+    }
+    return Promise.reject(error);
+  },
+);
 
 export default axiosInstance;

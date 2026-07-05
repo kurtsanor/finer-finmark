@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useLogout } from "../hooks/useLogout";
 
 const SellerTopbar = () => {
-  const { data: user } = useAuth();
+  const user = useAuth();
   const logoutMutation = useLogout();
 
   const navigate = useNavigate();

@@ -44,10 +44,15 @@ export const signUp = async (data: SignUpRequest): Promise<UserType> => {
  * Verify credentials and issue a signed JWT for the authenticated user.
  *
  * @param signInRequest - The sign-in payload.
- * @returns A signed JWT session token.
+ * @returns An object containing the user and a signed JWT session token.
  * @throws If the credentials are invalid or the database operation fails.
  */
-export const signIn = async (data: SignInRequest): Promise<string> => {
+export const signIn = async (
+  data: SignInRequest,
+): Promise<{
+  user: { firstName: string; lastName: string; role: string };
+  token: string;
+}> => {
   try {
     const user = await User.findOne({ email: data.email });
 
@@ -85,7 +90,14 @@ export const signIn = async (data: SignInRequest): Promise<string> => {
       },
     );
 
-    return token;
+    return {
+      user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+      },
+      token,
+    };
   } catch (error) {
     throw error;
   }

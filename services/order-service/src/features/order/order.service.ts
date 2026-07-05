@@ -178,7 +178,11 @@ export const getSellerOrders = async (sellerId: string) => {
     },
   })
     .then((res) => res.json())
-    .then((data) => data.data);
+    .then((data) => data.data)
+    .catch((error) => {
+      console.error("Error fetching shop:", error);
+      // throw new Error("Failed to fetch shop for seller");
+    });
 
   console.log("Shop is: ", shop);
 

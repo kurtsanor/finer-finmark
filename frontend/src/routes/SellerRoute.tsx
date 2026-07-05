@@ -2,11 +2,11 @@ import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 const SellerRoute = () => {
-  const { data: user, isLoading } = useAuth();
+  const user = useAuth();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
   if (!user) {
     return <Navigate to="/sign-in" replace />;

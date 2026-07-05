@@ -29,7 +29,7 @@ export const signIn = async (
   next: NextFunction,
 ) => {
   try {
-    const token = await authService.signIn(req.body);
+    const { user, token } = await authService.signIn(req.body);
 
     res.cookie("accessToken", token, {
       httpOnly: true,
@@ -38,7 +38,7 @@ export const signIn = async (
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     });
 
-    res.status(200).json({ message: "Sign in successful" });
+    res.status(200).json({ message: "Sign in successful", data: user });
   } catch (error) {
     next(error);
   }

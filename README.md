@@ -89,7 +89,18 @@ code .
 Open the VS Code terminal (Ctrl + J) and run:
 
 ```bash
-docker compose up --build
+docker build -t finmark/api-gateway:1.0 ./api-gateway 
+docker build -t finmark/auth-service:1.0 ./services/auth-service 
+docker build -t finmark/product-service:1.0 ./services/product-service 
+docker build -t finmark/order-service:1.0 ./services/order-service 
+docker build -t finmark/cart-service:1.0 ./services/cart-service 
+```
+```bash
+docker stack config -c docker-stack.yml
+```
+
+```bash
+docker stack deploy -c docker-stack.yml finmark
 ```
 
 This will start:

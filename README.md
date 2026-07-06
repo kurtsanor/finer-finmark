@@ -87,7 +87,14 @@ code .
 ### 3. Start Microservices + MongoDB
 
 Open the VS Code terminal (Ctrl + J) and run:
-
+Initialize Swarm Mode: One-time, engine-level command that turns the local Docker Desktop engine into a Swarm manager. If already part of a swarm,
+Docker will say so — that’s fine, move on.
+STEP 1:
+```bash
+docker swarm init
+```
+STEP 2:
+Build the Service Images
 ```bash
 docker build -t finmark/api-gateway:1.0 ./api-gateway 
 docker build -t finmark/auth-service:1.0 ./services/auth-service 
@@ -95,14 +102,18 @@ docker build -t finmark/product-service:1.0 ./services/product-service
 docker build -t finmark/order-service:1.0 ./services/order-service 
 docker build -t finmark/cart-service:1.0 ./services/cart-service 
 ```
+STEP 3: Validate the Stack File
 ```bash
 docker stack config -c docker-stack.yml
 ```
-
+STEP 4: Deploy the Stack
 ```bash
 docker stack deploy -c docker-stack.yml finmark
 ```
-
+STEP 5: Verify Everything is Running
+```bash
+docker service ls
+```
 This will start:
 
 - MongoDB database

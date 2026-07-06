@@ -140,3 +140,7 @@ Open your browser and navigate to:
 ```
 http://localhost:5173/sign-in
 ```
+Tear Down: Removes all Swarm services cleanly.
+```bash
+docker stack rm finmark
+```
